@@ -147,12 +147,10 @@ for facility in facilities:
     dfy = dfy[['SEARCHED ART NO.', 'OUTCOME', 'DATE OF DELIVERY']].copy() #ART NOs FOR ART NOs
     dfy = dfy.rename(columns = {'SEARCHED ART NO.':'ART No.'})
 
-
     dfx['ART No.'] = pd.to_numeric(dfx['ART No.'], errors='coerce')
     dfy['ART No.'] = pd.to_numeric(dfy['ART No.'], errors='coerce')
     dfy = dfy.drop_duplicates(subset=['ART No.'], keep ='last')
-  
-    
+      
     dfz = pd.merge(dfx,dfy, on = 'ART No.', how = 'left')
     facd.append(dfz)
 #those that have delivered
@@ -169,12 +167,10 @@ for facility in facilities:
     dfy = dfy[['SEARCHED ID', 'OUTCOME', 'DATE OF DELIVERY']].copy() #UNIQU ID FOR UNIQUE ID
     dfy = dfy.rename(columns = {'SEARCHED ID':'UNIQUE ID'})
 
-
     dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors='coerce')
     dfy['UNIQUE ID'] = pd.to_numeric(dfy['UNIQUE ID'], errors='coerce')
     dfy = dfy.drop_duplicates(subset=['UNIQUE ID'], keep ='last')
-  
-    
+      
     dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
     vfacd.append(dfz)
 pmb = pd.concat(vfacd)
@@ -188,7 +184,7 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 #st.write(extrad['DATE OF SUBMISSION'])
 #extrad = extrad[['DATE OF SUBMISSION']]
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
-                     'IS THIS HER PARENT FACILITY?']]#, 'ART No.', 'MWP IDI DISTRICT?',
+                     'IS THIS HER PARENT FACILITY?', 'ART No.']]#, 'MWP IDI DISTRICT?',
                            # 'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
                            # 'OTHER PARENT FACILITY',  'OTHER DISTRICT',
                            # 'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
