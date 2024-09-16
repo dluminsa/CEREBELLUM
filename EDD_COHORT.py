@@ -14,7 +14,7 @@ colb.markdown("<p><b><i>Know where all mothers are at any time t</i></b></p>", u
 
 try:
      #cola,colb= st.columns(2)
-     st.write('**SHOWING DATA FROM ANC, DELIVERY AND PCR DATABASES**')
+     st.write('**SHOWING THE CURRENT DATA FROM ANC, DELIVERY AND PCR DATABASES**')
      conn = st.connection('gsheets', type=GSheetsConnection)
      #if 'exist_de' not in st.session_state:/
      exist = conn.read(worksheet= 'PMTCT', usecols=list(range(26)),ttl=5)
