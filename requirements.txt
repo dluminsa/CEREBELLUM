@@ -1,7 +1,11 @@
-
+openpyxl
+plotly
 st-gsheets-connection
 git+https://github.com/streamlit/gsheets-connection
 streamlit
 pandas
 numpy
+pandas
+numpy
+IPython
 
