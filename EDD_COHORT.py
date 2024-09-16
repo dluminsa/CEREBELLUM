@@ -191,7 +191,7 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 #        'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
 #        'DATE OF DELIVERY']]
 df = pd.concat([extrad, df])
-st.write(df.columns)
+#st.write(df.columns)
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
