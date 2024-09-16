@@ -122,7 +122,7 @@ pmb = pm[pm['IS THIS HER PARENT FACILITY?']=='NO'].copy()
 
 ###THE DELIVERY DASHBOARD HAS TWO SECTIONS.. THOSE THAT WERE IN COHORT AND THOSE REGISTERED AFTER COHORT
 #SPLIT THEM AND THE JOIN THEM AGAIN
-st.write(devr.columns)
+st.write(delvr.columns)
 delvr['IN COHORT?'] = delvr['IN COHORT?'].astype(str)
 
 delv = delvr[delvr['IN COHORT?']=='YES'].copy()
