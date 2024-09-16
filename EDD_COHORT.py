@@ -98,7 +98,250 @@ except:
 if 'pc_df' not in st.session_state:
      st.session_state.pc_df = pcr
      pcr = st.session_state.pc_df
-st.write(pcr)
+     
+pm['ANC DATE'] = pd.to_datetime(pm['ANC DATE'], errors = 'coerce')
+pm['MONTH'] = pm['ANC DATE'].dt.strftime('%B')
+
+mapper = {'December':'M', 'May': 'E', 'October':'K', 'January': 'A', 'February':'B', 'July': 'G', 'November': 'L', 'August': 'H', 'September':'J',
+       'March': 'C', 'April': 'D', 'June': 'F'}
+pm['LETTER'] = pm['MONTH'].map(mapper)
+pm = pm.sort_values(by = ['LETTER'])
+pm['YEAR'] = pm['ANC DATE'].dt.strftime('%Y')
+#TOTAL MOTHERS IN COHORT
+total = pm.shape[0]
+pm['IS THIS HER PARENT FACILITY?'] = pm['IS THIS HER PARENT FACILITY?'].astype(str) #to use this to separte those from the facility and the rest
+
+#LIST OF FACILITIES IN COHORT
+pm['HEALTH FACILITY'] = pm['HEALTH FACILITY'].astype(str)
+facilities = pm['HEALTH FACILITY'].unique()
+
+#in the database, how many were from the facility
+pma = pm[pm['IS THIS HER PARENT FACILITY?']=='YES'].copy()
+#in the ANC database, how many were from other facilities
+pmb = pm[pm['IS THIS HER PARENT FACILITY?']=='NO'].copy()
+
+###THE DELIVERY DASHBOARD HAS TWO SECTIONS.. THOSE THAT WERE IN COHORT AND THOSE REGISTERED AFTER COHORT
+#SPLIT THEM AND THE JOIN THEM AGAIN
+delvr['IN COHORT?'] = delvr['IN COHORT?'].astype(str)
+
+delv = delvr[delvr['IN COHORT?']=='YES'].copy()
+extrad = delvr[delvr['IN COHORT?']=='NO'].copy()
+
+delv['SEARCHED ART NO.'] = delv['SEARCHED ART NO.'].astype(str) #use this to determine mothers in pm who are in del, by art nos, first to str to remove None
+#those that have been delivered, already in cohort by art nos
+delva = delv[delv['SEARCHED ART NO.']!='NONE'].copy()
+delv['SEARCHED ID'] = delv['SEARCHED ID'].astype(str) #use this to determine mothers in pm who are in del, by unique id, first to str to remove None
+#in the delivery database, how many were not from other facilities
+delvb = delv[delv['SEARCHED ID']!='NONE'].copy()
+##to compare pma with delva, pmb with delvb
+facd = [] #from facility, have delivered, pma vs delva
+
+for facility in facilities:
+    pma['HEALTH FACILITY'] = pma['HEALTH FACILITY'].astype(str)
+    dfx = pma[pma['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
+    
+    delva['FACILITY'] = delva['FACILITY'].astype(str)
+    dfy = delva[delva['FACILITY']== facility].copy()
+    dfy = dfy[['SEARCHED ART NO.', 'OUTCOME', 'DATE OF DELIVERY']].copy() #ART NOs FOR ART NOs
+    dfy = dfy.rename(columns = {'SEARCHED ART NO.':'ART No.'})
+
+
+    dfx['ART No.'] = pd.to_numeric(dfx['ART No.'], errors='coerce')
+    dfy['ART No.'] = pd.to_numeric(dfy['ART No.'], errors='coerce')
+    dfy = dfy.drop_duplicates(subset=['ART No.'], keep ='last')
+  
+    
+    dfz = pd.merge(dfx,dfy, on = 'ART No.', how = 'left')
+    facd.append(dfz)
+#those that have delivered
+pma = pd.concat(facd)
+### visitors pmb vs delvb, that ave delivered, search by unique ids
+vfacd = []
+
+for facility in facilities:
+    pmb['HEALTH FACILITY'] = pmb['HEALTH FACILITY'].astype(str)
+    dfx = pmb[pmb['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
+    
+    delvb['FACILITY'] = delvb['FACILITY'].astype(str)
+    dfy = delvb[delvb['FACILITY']== facility].copy()
+    dfy = dfy[['SEARCHED ID', 'OUTCOME', 'DATE OF DELIVERY']].copy() #UNIQU ID FOR UNIQUE ID
+    dfy = dfy.rename(columns = {'SEARCHED ID':'UNIQUE ID'})
+
+
+    dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors='coerce')
+    dfy['UNIQUE ID'] = pd.to_numeric(dfy['UNIQUE ID'], errors='coerce')
+    dfy = dfy.drop_duplicates(subset=['UNIQUE ID'], keep ='last')
+  
+    
+    dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
+    vfacd.append(dfz)
+pmb = pd.concat(vfacd)
+df = pd.concat([pma,pmb])
+
+extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALTH FACILITY', 'FROM THIS FACILITY?':'IS THIS HER PARENT FACILITY?', 
+'NEW ART NO.':'ART No.','FROM IDI SUPPORTED DISTRICT':'MWP IDI DISTRICT?', 'IDI DISTRICT':'IDI SUPPORTED DISTRICT','FROM IDI FACILITY': 'FROM IDI FACILITY?',
+    'PARENT FACILITY':'IDI PARENT FACILITY?','PHONE':'TELEPHONE'})
+
+extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER', 'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
+       'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
+       'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
+       'OTHER PARENT FACILITY',  'OTHER DISTRICT',
+       'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
+       'DATE OF DELIVERY']]
+df = pd.concat([extrad, df])
+df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
+df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
+df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
+
+today = dt.datetime.now() # DATE TODAY
+dmonth = int(today.strftime('%m')) #CURRENT MONTH
+dyear = int(today.strftime('%Y'))  #CURRENT YEAR
+
+def DUE(a,b):
+    if a > dyear:
+        return 'NOT DUE'
+    elif a == dyear:
+        if b > dmonth:
+            return 'NOT DUE'
+        else:
+            return 'DUE'
+    else:
+        return 'DUE'
+df['DUE'] = df.apply(lambda wee: DUE(wee['DYEAR'],wee['DMONTH']), axis=1) #APP;Y ABOVE FORMULA TO DETERMINE WHO IS DUE
+###### PCR SECTION
+df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
+#LIST OF FACILITIES IN COHORT
+df['HEALTH FACILITY'] = df['HEALTH FACILITY'].astype(str)
+facilities = df['HEALTH FACILITY'].unique()
+
+#in the database, how many were from the facility
+dfa = df[df['IS THIS HER PARENT FACILITY?']=='YES'].copy() 
+af = dfa.copy()
+#in the database, how many were from other facilities
+dfb = df[df['IS THIS HER PARENT FACILITY?']=='NO'].copy() 
+
+pcr['SEARCHED ART NO.'] = pcr['SEARCHED ART NO.'].astype(str) #use this to determine mothers in df who are in pcr, by art nos, first to str to remove None
+#those that have been bled, already in cohort by art nos
+pcra = pcr[pcr['SEARCHED ART NO.']!='NONE'].copy()
+pcr['SEARCHED ID'] = pcr['SEARCHED ID'].astype(str) #use this to determine mothers in df who are in pcr, by unique id, first to str to remove None
+#in the pcr database, how many were not from other facilities
+pcrb = pcr[pcr['SEARCHED ID']!='NONE'].copy()
+
+facp = [] 
+
+for facility in facilities:
+    dfa['HEALTH FACILITY'] = dfa['HEALTH FACILITY'].astype(str)
+    dfx = dfa[dfa['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
+    
+    pcra['FACILITY'] = pcra['FACILITY'].astype(str)
+    dfy = pcra[pcra['FACILITY']== facility].copy()
+    dfy = dfy[['SEARCHED ART NO.', 'AGE AT PCR', 'DATE OF PCR']].copy() 
+    dfy = dfy.rename(columns = {'SEARCHED ART NO.':'ART No.'})
+
+    dfx['ART No.'] = pd.to_numeric(dfx['ART No.'], errors='coerce')
+    dfy['ART No.'] = pd.to_numeric(dfy['ART No.'], errors='coerce')
+    dfy = dfy.drop_duplicates(subset=['ART No.'], keep ='last')
+    
+    dfz = pd.merge(dfx,dfy, on = 'ART No.', how = 'left')
+    facp.append(dfz)
+#those that have been bled        #################################
+dfa = pd.concat(facp)
+
+ag =dfa.copy()
+vfacn = []
+
+for facility in facilities:
+    dfb['HEALTH FACILITY'] = dfb['HEALTH FACILITY'].astype(str)
+    dfx = dfb[dfb['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
+    
+    pcrb['FACILITY'] = pcrb['FACILITY'].astype(str)  #UNIQUE IDS FOR UNIQUE IDS
+    dfy = pcrb[pcrb['FACILITY']== facility].copy()
+    dfy = dfy[['SEARCHED ID', 'AGE AT PCR', 'DATE OF PCR']].copy()
+    dfy = dfy.rename(columns = {'SEARCHED ID':'UNIQUE ID'})
+
+
+    dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors='coerce')
+    dfy['UNIQUE ID'] = pd.to_numeric(dfy['UNIQUE ID'], errors='coerce')
+    dfy = dfy.drop_duplicates(subset=['UNIQUE ID'], keep ='last')
+  
+    
+    dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
+    vfacn.append(dfz)
+dfb = pd.concat(vfacn) 
+df = pd.concat([dfa,dfb]) 
+
+st.write(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
