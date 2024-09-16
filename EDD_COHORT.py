@@ -270,8 +270,47 @@ for facility in facilities:
     vfacn.append(dfz)
 dfb = pd.concat(vfacn) 
 df = pd.concat([dfa,dfb]) 
+#GRAPHING
+df['IN COHORT?'] = df['IN COHORT?'].astype(str)
+incohort = df[df['IN COHORT?']!='NO'].copy()
+inc = int(incohort.shape[0])
+notcohort = df[df['IN COHORT?']=='NO'].copy()
+notc = int(notcohort.shape[0])
+total = int(df.shape[0])
+df['OUTCOME'] = df['OUTCOME'].astype(str)
+df['OUTCOME'] = df['OUTCOME'].fillna('NOT')
+df['OUTCOME'] = df['OUTCOME'].str.replace('nan','NOT', regex=False)
+delivered = df[df['OUTCOME']!='NOT'].copy()
+delv = int(delivered.shape[0])
+notdelivered = df[df['OUTCOME']=='NOT'].copy()
+notdelv = int(notdelivered.shape[0])
+notdelivered['DUE'] = notdelivered['DUE'].astype(str)
+due = notdelivered[notdelivered['DUE']=='DUE'].copy()
+duec = int(due.shape[0])
+notdue = notdelivered[notdelivered['DUE']=='NOT DUE'].copy()
+notduec = int(notdue.shape[0])
+labels = ["IN COHORT", "NOT", "TOTAL", 'DELIVERED',"NOT DUE", "DUE"]
 
-#st.write(df)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
