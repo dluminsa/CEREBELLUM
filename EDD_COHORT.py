@@ -290,7 +290,35 @@ duec = int(due.shape[0])
 notdue = notdelivered[notdelivered['DUE']=='NOT DUE'].copy()
 notduec = int(notdue.shape[0])
 labels = ["IN COHORT", "NOT", "TOTAL", 'DELIVERED',"NOT DUE", "DUE"]
+values = [inc, notc, total, -delv, -notduec, -duec]
+measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 
+# Create the waterfall chart
+fig = go.Figure(go.Waterfall(
+    name="Waterfall",
+    orientation="v",
+    measure=measure,
+    x=labels,
+    textposition="outside",
+    text=[f"{v}" for v in values],
+    y=values
+))
+
+# Add titles and labels and adjust layout properties
+fig.update_layout(
+    title="WATERFALL ANALYSIS OF THE COHORT",
+    xaxis_title="Categories",
+    yaxis_title="Values",
+    showlegend=True,
+    height=425,  # Adjust height to ensure the chart fits well
+    margin=dict(l=20, r=20, t=60, b=20),  # Adjust margins to prevent clipping
+    yaxis=dict(automargin=True)
+)
+# Show the plot
+#fig.show()
+#st.title("Waterfall Chart in Streamlit")
+st.plotly_chart(fig)
+# st.divider()
 
 
 
