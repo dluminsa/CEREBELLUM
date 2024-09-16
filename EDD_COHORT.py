@@ -136,6 +136,8 @@ delvb = delv[delv['SEARCHED ID']!='NONE'].copy()
 ##to compare pma with delva, pmb with delvb
 facd = [] #from facility, have delivered, pma vs delva
 
+st.write(delva.columns)
+
 for facility in facilities:
     pma['HEALTH FACILITY'] = pma['HEALTH FACILITY'].astype(str)
     dfx = pma[pma['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
