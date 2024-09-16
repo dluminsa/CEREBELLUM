@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+from streamlit_gsheets import GSheetsConnection
 import datetime as dt
 from IPython.display import display
 import streamlit as st
