@@ -184,8 +184,8 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 #st.write(extrad['DATE OF SUBMISSION'])
 #extrad = extrad[['DATE OF SUBMISSION']]
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
-                     'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?']]
-                           # 'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
+                     'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
+                            'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID']]#,
                            # 'OTHER PARENT FACILITY',  'OTHER DISTRICT',
                            # 'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
                            # 'DATE OF DELIVERY']]
