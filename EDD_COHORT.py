@@ -201,7 +201,7 @@ dyear = int(today.strftime('%Y'))  #CURRENT YEAR
 
 def DUE(a,b):
     if a > dyear:
-         ]]       return 'NOT DUE'
+         return 'NOT DUE'
     elif a == dyear:
         if b > dmonth:
             return 'NOT DUE'
