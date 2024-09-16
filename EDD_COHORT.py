@@ -73,7 +73,7 @@ try:
    #cola,colb= st.columns(2)
   # st.write('**SHOWING DATA FROM DELIVERY DATABASE**')
    conn = st.connection('gsheets', type=GSheetsConnection)
-   exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(25)),ttl=5)
+   exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(26)),ttl=5)
    df = exist.dropna(how='all')
    delvr = df.copy()
    #delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
@@ -186,12 +186,10 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
                      'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
                             'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
-                            #'OTHER PARENT FACILITY']]#,  
-                 'OTHER DISTRICT',
-                           'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
+                            'OTHER PARENT FACILITY''OTHER DISTRICT','OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
                            'DATE OF DELIVERY']]
 df = pd.concat([extrad, df])
-st.write(extrad)
+#st.write(extrad)
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
