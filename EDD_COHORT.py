@@ -90,7 +90,7 @@ try:
    #st.write('**SHOWING DATA FROM PCR DATABASE**')
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
-   df = exist.dropna(how='all')
+   pcr = exist.dropna(how='all')
    #pcr = df.rename(columns={'DATE OF PCR': 'DATEY'})
 except:
     st.write("POOR NETWORK, COULDN'T CONNECT TO PCR DATABASE")
