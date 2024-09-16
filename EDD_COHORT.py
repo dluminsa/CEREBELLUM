@@ -185,7 +185,7 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 #extrad = extrad[['DATE OF SUBMISSION']]
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
                      'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
-                            'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?']]#,'UNIQUE ID',
+                            'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID']]#,
                            # 'OTHER PARENT FACILITY',  'OTHER DISTRICT',
                            # 'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
                            # 'DATE OF DELIVERY']]
@@ -201,7 +201,7 @@ dyear = int(today.strftime('%Y'))  #CURRENT YEAR
 
 def DUE(a,b):
     if a > dyear:
-        return 'NOT DUE'
+         ]]       return 'NOT DUE'
     elif a == dyear:
         if b > dmonth:
             return 'NOT DUE'
