@@ -8,5 +8,5 @@ import streamlit as st
 
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
-cola, colb = st.columns([1,2])
+cola, colb = st.columns([1,4])
 colb.markdown("<p><b><i>Know where your mothers are at any time t</i></b></p>", unsafe_allow_html=True)
