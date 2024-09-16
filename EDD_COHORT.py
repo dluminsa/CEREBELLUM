@@ -75,7 +75,7 @@ try:
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(25)),ttl=5)
    df = exist.dropna(how='all')
-   delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
+   #delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
 except:
     st.write("POOR NETWORK, COULDN'T CONNECT TO DELIVERY DATABASE")
     st.stop()
@@ -90,7 +90,7 @@ try:
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
    df = exist.dropna(how='all')
-   pcr = df.rename(columns={'DATE OF PCR': 'DATEY'})
+   #pcr = df.rename(columns={'DATE OF PCR': 'DATEY'})
 except:
     st.write("POOR NETWORK, COULDN'T CONNECT TO PCR DATABASE")
     st.stop()
