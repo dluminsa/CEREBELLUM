@@ -75,6 +75,7 @@ try:
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(25)),ttl=5)
    df = exist.dropna(how='all')
+   delvr = df.copy()
    #delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
 except:
     st.write("POOR NETWORK, COULDN'T CONNECT TO DELIVERY DATABASE")
@@ -122,7 +123,7 @@ pmb = pm[pm['IS THIS HER PARENT FACILITY?']=='NO'].copy()
 
 ###THE DELIVERY DASHBOARD HAS TWO SECTIONS.. THOSE THAT WERE IN COHORT AND THOSE REGISTERED AFTER COHORT
 #SPLIT THEM AND THE JOIN THEM AGAIN
-st.write(delvr.columns)
+#st.write(delvr.columns)
 delvr['IN COHORT?'] = delvr['IN COHORT?'].astype(str)
 
 delv = delvr[delvr['IN COHORT?']=='YES'].copy()
