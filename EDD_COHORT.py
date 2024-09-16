@@ -68,4 +68,34 @@ except:
 if 'pm_df' not in st.session_state:
      st.session_state.pm_df = pm
      pm = st.session_state.pm_df
-st.write(pm.shape[0])
+#st.write(pm.shape[0])
+try:
+   #cola,colb= st.columns(2)
+   st.write('**SHOWING DATA FROM DELIVERY DATABASE**')
+   conn = st.connection('gsheets', type=GSheetsConnection)
+   exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(25)),ttl=5)
+   df = exist.dropna(how='all')
+   delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
+except:
+    st.write("POOR NETWORK, COUDN'T CONNECT TO DELIVERY DATABASE")
+    st.stop()
+     
+if 'de_df' not in st.session_state:
+     st.session_state.de_df = delvr
+     delvr = st.session_state.pm_df
+st.write(delivr)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
