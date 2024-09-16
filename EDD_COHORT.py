@@ -188,11 +188,11 @@ extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALT
 #st.write(extrad['DATE OF SUBMISSION'])
 #extrad = extrad[['DATE OF SUBMISSION']]
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY']]#,'IN COHORT?',
- # 'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
- #       'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
- #       'OTHER PARENT FACILITY',  'OTHER DISTRICT',
- #       'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
- #       'DATE OF DELIVERY']]
+ 'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
+       'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
+       'OTHER PARENT FACILITY',  'OTHER DISTRICT',
+       'OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
+       'DATE OF DELIVERY']]
 df = pd.concat([extrad, df])
 #st.write(df.columns)
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
@@ -276,7 +276,7 @@ for facility in facilities:
 dfb = pd.concat(vfacn) 
 df = pd.concat([dfa,dfb]) 
 
-st.write(df)
+#st.write(df)
 
 
 
