@@ -191,6 +191,7 @@ extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH F
 df = pd.concat([extrad, df])
 #st.write(extrad)
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
+st.write(df['EDD'])
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
 st.write(df['DYEAR'].value_counts())
