@@ -709,8 +709,8 @@ pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
 pcroverdue = int(nopcr[nopcr['PCR DUE'] == 'OVER DUE'].shape[0])
 totalpcrnotdue = pcrnotdue.shape[0]
 
-values = [totallive, -totalpcr, -totalpcrnotdue, -pcroverdue,-totalpcrdue]
-measure = ["absolute", "relative","relative", 'total',"total"]
+values = [totallive, -totalpcr, -totalpcrnotdue, pcroverdue,totalpcrdue]
+measure = ["absolute", "relative","relative", 'absolute',"relative"]
 
 # Create the waterfall chart
 fig = go.Figure(go.Waterfall(
