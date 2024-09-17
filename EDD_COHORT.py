@@ -70,7 +70,8 @@ if 'pm_df' not in st.session_state:
      #except:
       #    st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
        #   st.stop()
-st.write(st.session_state.pm_df)
+pm = st.session_state.pm_df.copy()
+st.write(pm)
 
 if 'de_df' not in st.session_state:     
      try:
