@@ -192,7 +192,7 @@ extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH F
                             'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
                             'OTHER PARENT FACILITY','OTHER DISTRICT','OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
                            'DATE OF DELIVERY']]
-extrad['EDD'] = extrad[''DATE OF DELIVERY']
+extrad['EDD'] = extrad['DATE OF DELIVERY']
 df = pd.concat([extrad, df])
 #st.write(extrad)
 st.write('BODY')
