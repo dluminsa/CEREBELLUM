@@ -293,7 +293,7 @@ if not facility:
     dfj3 = dfj2.copy()
     dfdel3 = dfdel2.copy()
 else:
-    df3 = df2[df2['HEALTH FACILITY'].isin(facility)].cop()
+    df3 = df2[df2['HEALTH FACILITY'].isin(facility)].copy()
     dfj3 = dfj2[dfj2['FACILITY'].isin(facility)].copy()
     dfdel3 = dfdel2[dfdel2['HEALTH FACILITY'].isin(facility)].copy()
  
