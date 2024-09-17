@@ -537,7 +537,7 @@ fig10 = go.Figure(data=[go.Pie(
     values=counts.values,
     hole=0.3,  # This creates the donut shape
     marker=dict(
-        colors=[blue', 'red', 'green', 'purple', 'yellow', 'pink']  # Colors for 'YES' and 'NO'
+        colors=['blue', 'red', 'green', 'purple', 'yellow', 'pink']  # Colors for 'YES' and 'NO'
     ),
     text=labels,  # Use labels with counts
     textinfo='text+percent',  # Display text and percentage
