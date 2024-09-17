@@ -737,7 +737,7 @@ fig.update_layout(
 cola,colb = st.columns([1,4])
 colb.write('**WATER FALL ANALYSIS OF DELIVERIES VS PCR DONE**')
 st.write(f'**TOTAL: {totallive} MOTHERS HAVE HAD LIVE BIRTHS**')
-st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
+st.markdown(f'**Of these, {totalpcr} have had their babies bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
 st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
 st.plotly_chart(fig)
 st.divider()
