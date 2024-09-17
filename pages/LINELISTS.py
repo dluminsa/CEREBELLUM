@@ -423,6 +423,17 @@ colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
 st.write(f'**TOTAL: {total} MOTHERS ARE IN COHORT**')
 st.markdown(f'**Of these {inc} were registered during ANC, {notc} were registered during delivery**')#, giving a total of {total} mothers**')
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
+dues = due.drop(columns = ['DATE OF SUBMISSION','CLUSTER', 'DMONTH', 'DYEAR', 'EYEAR', 'EMONTH', 'EDMONTH'])
+with st.expander ('Click here to see mothers that are due'):
+    dues = dues.set_index('CLUSTER')
+    st.write(dues)
+    data = dues.to_csv(index=False)
+    st.download_button(
+                       label="DOWNLOAD_DUE_MOTHERS',
+                       data= data,
+                       file_name="DUE.csv",
+                       mime="text/csv")
+    
 
 st.divider()
 
