@@ -70,7 +70,7 @@ if 'pm_df' not in st.session_state:
           st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
           st.stop()
 
-if st.session_state.de_df not in st.session:     
+if 'de_df' not in st.session_state:     
      try:
         #cola,colb= st.columns(2)
         conn = st.connection('gsheets', type=GSheetsConnection)
@@ -83,7 +83,7 @@ if st.session_state.de_df not in st.session:
          st.write("POOR NETWORK, COULDN'T CONNECT TO DELIVERY DATABASE")
          st.stop()
           
-if st.session.pc_df not in st.session_state:
+if 'pc_df' not in st.session_state:
      try:
         conn = st.connection('gsheets', type=GSheetsConnection)
         exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
