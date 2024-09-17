@@ -187,9 +187,6 @@ df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
 today = dt.datetime.now() # DATE TODAY
 dmonth = int(today.strftime('%m')) #CURRENT MONTH
 dyear = int(today.strftime('%Y'))  #CURRENT YEAR
-st.write(df['DMONTH'].value_counts())
-st.write(f'the year is {dyear} and the month is {dmonth}')
-
 def DUE(a,b):
     if a > dyear:
          return 'NOT DUE'
@@ -200,9 +197,9 @@ def DUE(a,b):
             return 'DUE'
     else:
         return 'DUE'
+df[['DMONTH', 'DYEAR']] = df[['DMONTH', 'DYEAR']].astype(int)
 df['DUE'] = df.apply(lambda wee: DUE(wee['DYEAR'],wee['DMONTH']), axis=1) #APP;Y ABOVE FORMULA TO DETERMINE WHO IS DUE
 due = df[df['DUE'] == 'NOT DUE'].copy()
-st.write(due)
 ###### PCR SECTION
 df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
 #LIST OF FACILITIES IN COHORT
@@ -286,7 +283,7 @@ values = [inc, notc, total, -delv, -notduec, -duec]
 measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 
 # Create the waterfall chart
-fig = go.Figure(go.Waterfall(
+fig1 = go.Figure(go.Waterfall(
     name="Waterfall",
     orientation="v",
     measure=measure,
@@ -297,7 +294,7 @@ fig = go.Figure(go.Waterfall(
 ))
 
 # Add titles and labels and adjust layout properties
-fig.update_layout(
+fig1.update_layout(
     title="WATERFALL ANALYSIS OF THE COHORT",
     xaxis_title="Categories",
     yaxis_title="Values",
@@ -309,7 +306,7 @@ fig.update_layout(
 # Show the plot
 #fig.show()
 #st.title("Waterfall Chart in Streamlit")
-#st.plotly_chart(fig)
+st.plotly_chart(fig1)
 # st.divider()
 
 #VISITORS
