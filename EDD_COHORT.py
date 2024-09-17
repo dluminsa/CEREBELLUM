@@ -177,6 +177,8 @@ for facility in facilities:
     vfacd.append(dfz)
 pmb = pd.concat(vfacd)
 df = pd.concat([pma,pmb])
+st.write('HEAD')
+st.write(df['EDD'].head(5))
 
 extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALTH FACILITY', 'FROM THIS FACILITY?':'IS THIS HER PARENT FACILITY?', 
 'NEW ART NO.':'ART No.','FROM IDI SUPPORTED DISTRICT':'MWP IDI DISTRICT?', 'IDI DISTRICT':'IDI SUPPORTED DISTRICT','FROM IDI FACILITY': 'FROM IDI FACILITY?',
