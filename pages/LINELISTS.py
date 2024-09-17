@@ -421,8 +421,8 @@ measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 st.markdown(f'**{duec} mothers are now due and need to be tracked**')
 
 dues = due.drop(columns = ['DATE OF SUBMISSION','CLUSTER', 'DMONTH', 'DYEAR', 'EYEAR', 'EMONTH', 'EDMONTH'])
-dues['ANC DATE'] = dues['ANC DATE'].astype(str)
-dues['ANC DATE'] = dues['ANC DATE'].str.replace('00:00:00', regex=False)
+dues['ANC DATE'] = pd.to_datetime(dues['ANC DATE'], errors='coerce')
+dues['ANC DATE'] = dues['ANC DATE'].dt.date#str.replace('00:00:00', regex=False)
 with st.expander ('Click here to see and download mothers that are due'):
     dues = dues.set_index('FACILITY DISTRICT')
     st.write(dues.head(3))
