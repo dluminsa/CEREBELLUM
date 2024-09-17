@@ -8,4 +8,5 @@ numpy
 pandas
 numpy
 IPython
+bcrypt
 
