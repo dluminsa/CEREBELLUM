@@ -210,6 +210,8 @@ def DUE(a,b):
     else:
         return 'DUE'
 df['DUE'] = df.apply(lambda wee: DUE(wee['DYEAR'],wee['DMONTH']), axis=1) #APP;Y ABOVE FORMULA TO DETERMINE WHO IS DUE
+due = df[df['DUE'] == 'NOT DUE'].copy()
+st.write(due)
 ###### PCR SECTION
 df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
 #LIST OF FACILITIES IN COHORT
