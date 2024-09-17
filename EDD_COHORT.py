@@ -706,7 +706,7 @@ nopcr['PCR DUE'] = nopcr['PCR DUE'].astype(str)
 pcrdue = nopcr[nopcr['PCR DUE'] == 'DUE']
 totalpcrdue = pcrdue.shape[0]
 pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
-pcroverdue = nopcr[nopcr['PCR DUE'] == 'OVER DUE']
+pcroverdue = int(nopcr[nopcr['PCR DUE'] == 'OVER DUE'].shape[0])
 totalpcrnotdue = pcrnotdue.shape[0]
 
 values = [totallive, -totalpcr, -totalpcrnotdue, pcroverdue,totalpcrdue]
