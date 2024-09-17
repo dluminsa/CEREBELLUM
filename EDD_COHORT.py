@@ -346,6 +346,7 @@ st.divider()
 
 #OF THE VISITORS, HOW MANY ARE FROM THE REGION
 visitors['MWP IDI DISTRICT?'].value_counts()
+mapper2 = {'YES':'REGION', 'NO': 'OUTSIDE'}
 visitors['REGIONAL'] = visitors['MWP IDI DISTRICT?'].map(mapper2)
 
 # Count occurrences of each category
