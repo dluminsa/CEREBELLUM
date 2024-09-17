@@ -530,8 +530,8 @@ with cola:
                                mime="text/csv")
 
 with colb:
-    st.markdown(f'**{pcroverdue} mothers, their babies are due for a timely PCR**')#, {pcroverdue} are over due**')
-    with st.expander ('**BABIES DUE FOR PCR**'):
+    st.markdown(f'**{pcroverdue} mothers, their babies are over due for the first PCR**')#, {pcroverdue} are over due**')
+    with st.expander ('**BABIES OVER DUE FOR PCR**'):
             pcrss = pcroverdues.copy()#.set_index('FACILITY DISTRICT')
             st.write(pcrss.head(4))
             data = pcrss.to_csv(index=False)
