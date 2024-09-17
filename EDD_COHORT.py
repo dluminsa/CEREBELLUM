@@ -65,15 +65,12 @@ try:
 except:
      st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
      st.stop()
-st.write(pm.head(5))
-st.write(pm['EDD'])
+
 if 'pm_df' not in st.session_state:
      st.session_state.pm_df = pm
      pm = st.session_state.pm_df
-#st.write(pm.shape[0])
 try:
    #cola,colb= st.columns(2)
-  # st.write('**SHOWING DATA FROM DELIVERY DATABASE**')
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(26)),ttl=5)
    df = exist.dropna(how='all')
@@ -86,10 +83,7 @@ except:
 if 'de_df' not in st.session_state:
      st.session_state.de_df = delvr
      delvr = st.session_state.de_df
-#st.write(delvr)
 try:
-   #cola,colb= st.columns(2)
-   #st.write('**SHOWING DATA FROM PCR DATABASE**')
    conn = st.connection('gsheets', type=GSheetsConnection)
    exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
    pcr = exist.dropna(how='all')
@@ -125,7 +119,6 @@ pmb = pm[pm['IS THIS HER PARENT FACILITY?']=='NO'].copy()
 
 ###THE DELIVERY DASHBOARD HAS TWO SECTIONS.. THOSE THAT WERE IN COHORT AND THOSE REGISTERED AFTER COHORT
 #SPLIT THEM AND THE JOIN THEM AGAIN
-#st.write(delvr.columns)
 delvr['IN COHORT?'] = delvr['IN COHORT?'].astype(str)
 
 delv = delvr[delvr['IN COHORT?']=='YES'].copy()
@@ -139,7 +132,6 @@ delv['SEARCHED ID'] = delv['SEARCHED ID'].astype(str) #use this to determine mot
 delvb = delv[delv['SEARCHED ID']!='NONE'].copy()
 ##to compare pma with delva, pmb with delvb
 facd = [] #from facility, have delivered, pma vs delva
-#st.write(delva.columns)
 for facility in facilities:
     pma['HEALTH FACILITY'] = pma['HEALTH FACILITY'].astype(str)
     dfx = pma[pma['HEALTH FACILITY']== facility].copy()  # each facility should be compared with each facility
@@ -177,16 +169,9 @@ for facility in facilities:
     vfacd.append(dfz)
 pmb = pd.concat(vfacd)
 df = pd.concat([pma,pmb])
-st.write('HEAD')
-st.write(df['EDD'].head(5))
-
 extrad = extrad.rename(columns={'DISTRICT':'FACILITY DISTRICT','FACILITY':'HEALTH FACILITY', 'FROM THIS FACILITY?':'IS THIS HER PARENT FACILITY?', 
 'NEW ART NO.':'ART No.','FROM IDI SUPPORTED DISTRICT':'MWP IDI DISTRICT?', 'IDI DISTRICT':'IDI SUPPORTED DISTRICT','FROM IDI FACILITY': 'FROM IDI FACILITY?',
     'PARENT FACILITY':'IDI PARENT FACILITY?','PHONE':'TELEPHONE'})
-
-#st.write(extrad.columns)
-#st.write(extrad['DATE OF SUBMISSION'])
-#extrad = extrad[['DATE OF SUBMISSION']]
 extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH FACILITY','IN COHORT?',
                      'IS THIS HER PARENT FACILITY?', 'ART No.', 'MWP IDI DISTRICT?',
                             'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
@@ -198,13 +183,11 @@ df = pd.concat([extrad, df])
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce')#, format = '%Y -%m-%d') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
-st.write('BODY')
-st.write(df['DYEAR'].value_counts())
-#df['EDD'] = df['EDD'].astype
 
 today = dt.datetime.now() # DATE TODAY
 dmonth = int(today.strftime('%m')) #CURRENT MONTH
 dyear = int(today.strftime('%Y'))  #CURRENT YEAR
+st.write(df['DMONTH'].value_counts())
 st.write(f'the year is {dyear} and the month is {dmonth}')
 
 def DUE(a,b):
