@@ -379,7 +379,7 @@ fig1 = go.Figure(go.Waterfall(
 
 # Add titles and labels and adjust layout properties
 fig1.update_layout(
-    title="WATERFALL ANALYSIS OF THE COHORT",
+    title="",
     xaxis_title="Categories",
     yaxis_title="Values",
     showlegend=True,
