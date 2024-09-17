@@ -11,14 +11,17 @@ from datetime import datetime
 cola,colb,colc = st.columns([1,2,1])
 
 with colb:
-  with st.form():
+  with st.form(key = 'pass'):
     password = st.text_input('**IN PUT PASSWORD BEFORE LOGIN**', placeholder='password')
-if not password:
-  st.stop()
-elif password  == 'PMTCT8910':
-  pass
-else:
-  st.stop()
+    submit = st.form_submit_button(label='Login')
+
+# Check if the form was submitted and process the password
+if submit_button:
+    if password == 'PMTCT8910':
+        st.write('Password entered successfully!')
+    else:
+        st.write('Please enter a password before logging in.')
+        st.stop()
 
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
