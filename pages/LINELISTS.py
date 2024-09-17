@@ -10,7 +10,7 @@ from datetime import datetime
 import bcrypt
 
 # Example hashed password for "password123" using bcrypt
-hashed_password = bcrypt.hashpw("password123".encode('utf-8'), bcrypt.gensalt())
+hashed_password = bcrypt.hashpw("pmtct8910".encode('utf-8'), bcrypt.gensalt())
 
 USER_CREDENTIALS = {
     'admin': hashed_password,  # Store hashed password
@@ -421,6 +421,8 @@ measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 st.markdown(f'**{duec} mothers are now due and need to be tracked**')
 
 dues = due.drop(columns = ['DATE OF SUBMISSION','CLUSTER', 'DMONTH', 'DYEAR', 'EYEAR', 'EMONTH', 'EDMONTH'])
+dues['ANC DATE'] = dues['ANC DATE'].astype(str)
+dues['ANC DATE'] = dues['ANC DATE'].str.replace('00:00:00', regexx=False)
 with st.expander ('Click here to see and download mothers that are due'):
     dues = dues.set_index('FACILITY DISTRICT')
     st.write(dues.head(3))
@@ -448,31 +450,6 @@ ourd = int(df[df['VISITORS']=='OURS'].shape[0])
 theird = int(df[df['VISITORS']=='VISITORS'].shape[0])
 
 # Prepare labels with counts
-labels = [f"{label}: {count}" for label, count in counts.items()]
-
-# Create the donut chart
-fig2 = go.Figure(data=[go.Pie(
-    labels=counts.index,
-    values=counts.values,
-    hole=0.4,  # This creates the donut shape
-    marker=dict(
-        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
-    ),
-    text=labels,  # Use labels with counts
-    textinfo='text+percent',  # Display text and percentage
-    insidetextorientation='radial'  # Text orientation
-)])
-
-# Update layout
-fig2.update_layout(
-    title_text='',
-    showlegend=True
-)
-cola,colb = st.columns([1,4])
-colb.write('**PROPORTION OF VISITORS**')
-st.markdown(f'**Of the {inc + notc} mothers in cohort, {ourd} were from the same reporting facility, {theird} were visitors**')
-#st.plotly_chart(fig2)
-#st.divider()
 
 
 #OF THE VISITORS, HOW MANY ARE FROM THE REGION
@@ -483,59 +460,27 @@ visitors['REGIONAL'] = visitors['MWP IDI DISTRICT?'].map(mapper2)
 # Count occurrences of each category
 counts = visitors['REGIONAL'].value_counts()
 outd =int( visitors[visitors['REGIONAL']=='REGION'].shape[0])
-# Prepare labels with counts
-labels = [f"{label}: {count}" for label, count in counts.items()]
 
-# Create the donut chart
-fig3 = go.Figure(data=[go.Pie(
-    labels=counts.index,
-    values=counts.values,
-    hole=0.4,  # This creates the donut shape
-    marker=dict(
-        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
-    ),
-    text=labels,  # Use labels with counts
-    textinfo='text+percent',  # Display text and percentage
-    insidetextorientation='radial'  # Text orientation
-)])
-
-# Update layout
-fig3.update_layout(
-    title_text='',
-    showlegend=True
-)
-
-# Display the chart
-cola,colb = st.columns([1,4])
-colb.write('**VISITORS FROM WITHIN REGION VS FROM OUTSIDE**')
-st.markdown(f'**Of the {theird} visitors in cohort, {outd} were from within the region, {theird-outd} were from outside the region**')
-#st.plotly_chart(fig3)
-#st.divider()
 
 #OF THOSE THAT ARE DUE, HOW MANY ARE OURS, HOW MANY ARE VISITOR
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
 notdelivered['IS THIS HER PARENT FACILITY?'] =notdelivered['IS THIS HER PARENT FACILITY?'].astype(str)
 duevisitors = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='NO'].copy()
 duev = duevisitors.shape[0]
-dueours = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='YES'].copy()
-dueo = dueours.shape[0]
 
-# Creating the grouped bar chart
-fig4 = go.Figure(data=[
-    go.Bar(name='TOTAL DUE', x=['TOTAL DUE'], y=[duec], marker=dict(color='blue')),
-    go.Bar(name='OURS', x=['OURS'], y=[dueo], marker=dict(color='green')),
-    go.Bar(name='VISITORS', x=['VISITORS'], y=[duev], marker=dict(color='red'))
-])
-
-# Setting the layout to have no gap between bars
-fig4.update_layout(barmode='group', bargap=0, bargroupgap=0)
-
-# Display the chart
-cola,colb = st.columns([1,4])
 colb.write('**OF MOTHERS DUE, HOW MANY ARE VISITORS**')
-st.markdown(f'**Of the {duec} Mothers due, {dueo} are from within the same reporting facility, {duev} are visitors**')
-#st.plotly_chart(fig4)
-#st.divider()
+st.markdown(f'**There are {duev} due mothers who are visitors**')
+with st.expander ('Click here to see and download due visitors'):
+    duevs = duevs.set_index('FACILITY DISTRICT')
+    st.write(duevs.head(3))
+    data = duevs.to_csv(index=False)
+    st.download_button(
+                       label='DOWNLOAD_DUE_VISITORS',
+                       data= data,
+                       file_name="DUE_VISITORS.csv",
+                       mime="text/csv")
+
+st.divider()
 
 #CONTRIBUTION OF DISTRICTS TO VISITORS
 df['MWP IDI DISTRICT?'] = df['MWP IDI DISTRICT?'].astype(str)
