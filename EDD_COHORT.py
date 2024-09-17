@@ -14,7 +14,7 @@ cola, colb = st.columns([1,4])
 colb.markdown("<p><b><i>Know where all mothers are at any time t</i></b></p>", unsafe_allow_html=True)
 
 if 'pm_df' not in st.session_state:
-     try:
+     #try:
           #cola,colb= st.columns(2)
           st.write('**SHOWING THE CURRENT DATA FROM ANC, DELIVERY AND PCR DATABASES**')
           conn = st.connection('gsheets', type=GSheetsConnection)
@@ -66,9 +66,9 @@ if 'pm_df' not in st.session_state:
           pm = pd.concat(dfc)
           st.session_state.pm_df = pm
           pm = st.session_state.pm_df
-     except:
-          st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
-          st.stop()
+     #except:
+      #    st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
+       #   st.stop()
 
 if 'de_df' not in st.session_state:     
      try:
