@@ -63,8 +63,8 @@ if 'pm_df' not in st.session_state:
                dfx = dfx.drop_duplicates(subset = ['NAME'], keep='first')           
                #dfx = dfx.drop_duplicates(subset = ['UNIQUE ID'], keep='first')
                dfc.append(dfx)
-          pm = pd.concat(dfc)
-          st.session_state.pm_df = pm
+          df = pd.concat(dfc)
+          st.session_state.pm_df = df
           pm = st.session_state.pm_df
           st.write(pm)
      #except:
