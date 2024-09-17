@@ -195,7 +195,7 @@ extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH F
 extrad['EDD'] = extrad['DATE OF DELIVERY']
 df = pd.concat([extrad, df])
 
-df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%Y -%m-%d') #CONVERT edd to date time
+df['EDD'] k= pd.to_datetime(df['EDD'], errors='coerce', format = '%Y -%m-%d') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
 st.write(df['DYEAR'].value_counts())
@@ -270,11 +270,9 @@ for facility in facilities:
     dfy = dfy[['SEARCHED ID', 'AGE AT PCR', 'DATE OF PCR']].copy()
     dfy = dfy.rename(columns = {'SEARCHED ID':'UNIQUE ID'})
 
-
     dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors='coerce')
     dfy['UNIQUE ID'] = pd.to_numeric(dfy['UNIQUE ID'], errors='coerce')
-    dfy = dfy.drop_duplicates(subset=['UNIQUE ID'], keep ='last')
-  
+    dfy = dfy.drop_duplicates(subset=['UNIQUE ID'], keep ='last')  
     
     dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
     vfacn.append(dfz)
