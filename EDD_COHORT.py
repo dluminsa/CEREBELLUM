@@ -380,8 +380,8 @@ fig1 = go.Figure(go.Waterfall(
 # Add titles and labels and adjust layout properties
 fig1.update_layout(
     title="",
-    xaxis_title="Categories",
-    yaxis_title="Values",
+    xaxis_title="CATEGORIES",
+    yaxis_title="No. OF MOTHERS",
     showlegend=True,
     height=425,  # Adjust height to ensure the chart fits well
     margin=dict(l=20, r=20, t=60, b=20),  # Adjust margins to prevent clipping
@@ -389,7 +389,7 @@ fig1.update_layout(
 )
 # Show the plot
 cola,colb = st.columns([1,4])
-colb.write('WATER FALL ANALYSIS OF THE COHORT')
+colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
 st.markdown(f'**{inc} mothers were registered during ANC, {notc} were registered during delivery, giving a total of {total} mothers**')
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
 st.plotly_chart(fig1)
