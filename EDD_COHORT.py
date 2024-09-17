@@ -304,10 +304,8 @@ fig1.update_layout(
     yaxis=dict(automargin=True)
 )
 # Show the plot
-#fig.show()
-#st.title("Waterfall Chart in Streamlit")
 st.plotly_chart(fig1)
-# st.divider()
+st.divider()
 
 #VISITORS
 df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
@@ -325,7 +323,7 @@ counts = df['VISITORS'].value_counts()
 labels = [f"{label}: {count}" for label, count in counts.items()]
 
 # Create the donut chart
-fig = go.Figure(data=[go.Pie(
+fig2 = go.Figure(data=[go.Pie(
     labels=counts.index,
     values=counts.values,
     hole=0.4,  # This creates the donut shape
@@ -338,13 +336,12 @@ fig = go.Figure(data=[go.Pie(
 )])
 
 # Update layout
-fig.update_layout(
+fig2.update_layout(
     title_text='PROPORTION OF VISITORS',
     showlegend=True
 )
-
-# Display the chart
-#fig.show()
+st.plotly_chart(fig2)
+st.divider()
 
 
 
