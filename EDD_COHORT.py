@@ -196,7 +196,7 @@ df = pd.concat([extrad, df])
 #st.write(extrad)
 st.write('BODY')
 st.write(df['EDD'])
-df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
+df['EDD'] = pd.to_datetime(df['EDD'], errors='ignore', format = '%d -%m-%Y') #CONVERT edd to date time
 st.write('BODY')
 st.write(df['EDD'])
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
