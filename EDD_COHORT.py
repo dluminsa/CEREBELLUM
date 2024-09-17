@@ -13,90 +13,87 @@ colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
 cola, colb = st.columns([1,4])
 colb.markdown("<p><b><i>Know where all mothers are at any time t</i></b></p>", unsafe_allow_html=True)
 
-try:
-     #cola,colb= st.columns(2)
-     st.write('**SHOWING THE CURRENT DATA FROM ANC, DELIVERY AND PCR DATABASES**')
-     conn = st.connection('gsheets', type=GSheetsConnection)
-     #if 'exist_de' not in st.session_state:/
-     exist = conn.read(worksheet= 'PMTCT', usecols=list(range(26)),ttl=5)
-     exist = exist.dropna(how = 'all')
-     
-     back = conn.read(worksheet= 'BACK1', usecols=list(range(26)),ttl=5)
-     back = back.dropna(how = 'all')
-     cola, colb = st.columns(2)         
-     df = pd.concat([back, exist])
-     df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
-     dfa = df[df['IS THIS HER PARENT FACILITY?']=='YES'].copy()
-     dfb = df[df['IS THIS HER PARENT FACILITY?']=='NO'].copy()
-     
-     dfs=[]
-     faci = dfa['HEALTH FACILITY'].unique()
-     for facility in faci:
-          dfa['HEALTH FACILITY'] = dfa['HEALTH FACILITY'].astype(str)
-          dfx = df[df['HEALTH FACILITY']==facility].copy()
-          #dfx['ART No.'] = dfx['ART No.'].astype(str)
-          dfx['ART No.'] = pd.to_numeric(dfx['ART No.'], errors = 'coerce')#.astype(int)
-          dfx = dfx.drop_duplicates(subset = ['ART No.'], keep='first')
-          dfs.append(dfx)
-     dfa = pd.concat(dfs)
-     
-     dfas=[]
-     facy = dfb['HEALTH FACILITY'].unique()
-     for facility in facy:
-          dfb['HEALTH FACILITY'] = dfb['HEALTH FACILITY'].astype(str)
-          dfx = df[df['HEALTH FACILITY']==facility].copy()
-          #dfx['UNIQUE ID'] = dfx['UNIQUE ID'].astype(str)
-          dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors = 'coerce')#.astype(int)
-          dfx = dfx.drop_duplicates(subset = ['UNIQUE ID'], keep='first')
-          dfas.append(dfx)
-     dfb = pd.concat(dfas)
-     df = pd.concat([dfa, dfb])
-     
-     facy = df['HEALTH FACILITY'].unique()
-     
-     dfc = []
-     for facility in facy:
-          df['HEALTH FACILITY'] = df['HEALTH FACILITY'].astype(str)
-          dfx = df[df['HEALTH FACILITY']==facility].copy()
-          dfx['NAME'] = dfx['NAME'].astype(str)
-          dfx = dfx.drop_duplicates(subset = ['NAME'], keep='first')           
-          #dfx = dfx.drop_duplicates(subset = ['UNIQUE ID'], keep='first')
-          dfc.append(dfx)
-     pm = pd.concat(dfc)
-except:
-     st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
-     st.stop()
-
 if 'pm_df' not in st.session_state:
-     st.session_state.pm_df = pm
-     pm = st.session_state.pm_df
-try:
-   #cola,colb= st.columns(2)
-   conn = st.connection('gsheets', type=GSheetsConnection)
-   exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(26)),ttl=5)
-   df = exist.dropna(how='all')
-   delvr = df.copy()
-   #delvr = df.rename(columns={'DATE OF DELIVERY': 'DATEY'})
-except:
-    st.write("POOR NETWORK, COULDN'T CONNECT TO DELIVERY DATABASE")
-    st.stop()
-     
-if 'de_df' not in st.session_state:
-     st.session_state.de_df = delvr
-     delvr = st.session_state.de_df
-try:
-   conn = st.connection('gsheets', type=GSheetsConnection)
-   exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
-   pcr = exist.dropna(how='all')
-   #pcr = df.rename(columns={'DATE OF PCR': 'DATEY'})
-except:
-    st.write("POOR NETWORK, COULDN'T CONNECT TO PCR DATABASE")
-    st.stop()
-     
+     try:
+          #cola,colb= st.columns(2)
+          st.write('**SHOWING THE CURRENT DATA FROM ANC, DELIVERY AND PCR DATABASES**')
+          conn = st.connection('gsheets', type=GSheetsConnection)
+          #if 'exist_de' not in st.session_state:/
+          exist = conn.read(worksheet= 'PMTCT', usecols=list(range(26)),ttl=5)
+          exist = exist.dropna(how = 'all')
+          
+          back = conn.read(worksheet= 'BACK1', usecols=list(range(26)),ttl=5)
+          back = back.dropna(how = 'all')
+          cola, colb = st.columns(2)         
+          df = pd.concat([back, exist])
+          df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
+          dfa = df[df['IS THIS HER PARENT FACILITY?']=='YES'].copy()
+          dfb = df[df['IS THIS HER PARENT FACILITY?']=='NO'].copy()
+          
+          dfs=[]
+          faci = dfa['HEALTH FACILITY'].unique()
+          for facility in faci:
+               dfa['HEALTH FACILITY'] = dfa['HEALTH FACILITY'].astype(str)
+               dfx = df[df['HEALTH FACILITY']==facility].copy()
+               #dfx['ART No.'] = dfx['ART No.'].astype(str)
+               dfx['ART No.'] = pd.to_numeric(dfx['ART No.'], errors = 'coerce')#.astype(int)
+               dfx = dfx.drop_duplicates(subset = ['ART No.'], keep='first')
+               dfs.append(dfx)
+          dfa = pd.concat(dfs)
+          
+          dfas=[]
+          facy = dfb['HEALTH FACILITY'].unique()
+          for facility in facy:
+               dfb['HEALTH FACILITY'] = dfb['HEALTH FACILITY'].astype(str)
+               dfx = df[df['HEALTH FACILITY']==facility].copy()
+               #dfx['UNIQUE ID'] = dfx['UNIQUE ID'].astype(str)
+               dfx['UNIQUE ID'] = pd.to_numeric(dfx['UNIQUE ID'], errors = 'coerce')#.astype(int)
+               dfx = dfx.drop_duplicates(subset = ['UNIQUE ID'], keep='first')
+               dfas.append(dfx)
+          dfb = pd.concat(dfas)
+          df = pd.concat([dfa, dfb])
+          
+          facy = df['HEALTH FACILITY'].unique()
+          
+          dfc = []
+          for facility in facy:
+               df['HEALTH FACILITY'] = df['HEALTH FACILITY'].astype(str)
+               dfx = df[df['HEALTH FACILITY']==facility].copy()
+               dfx['NAME'] = dfx['NAME'].astype(str)
+               dfx = dfx.drop_duplicates(subset = ['NAME'], keep='first')           
+               #dfx = dfx.drop_duplicates(subset = ['UNIQUE ID'], keep='first')
+               dfc.append(dfx)
+          pm = pd.concat(dfc)
+          st.session_state.pm_df = pm
+          pm = st.session_state.pm_df
+     except:
+          st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
+          st.stop()
+
+if st.session_state.de_df not st.seesion:     
+     try:
+        #cola,colb= st.columns(2)
+        conn = st.connection('gsheets', type=GSheetsConnection)
+        exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(26)),ttl=5)
+        df = exist.dropna(how='all')
+        delvr = df.copy()
+        st.session_state.de_df = delvr
+        delvr = st.session_state.de_df
+     except:
+         st.write("POOR NETWORK, COULDN'T CONNECT TO DELIVERY DATABASE")
+         st.stop()
+          
 if 'pc_df' not in st.session_state:
-     st.session_state.pc_df = pcr
-     pcr = st.session_state.pc_df
-     
+     try:
+        conn = st.connection('gsheets', type=GSheetsConnection)
+        exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
+        pcr = exist.dropna(how='all')
+        pcr = st.session_state.pc_df
+        st.session_state.pc_df = pcr
+     except:
+         st.write("POOR NETWORK, COULDN'T CONNECT TO PCR DATABASE")
+         st.stop()
+        
 pm['ANC DATE'] = pd.to_datetime(pm['ANC DATE'], errors = 'coerce')
 pm['MONTH'] = pm['ANC DATE'].dt.strftime('%B')
 
