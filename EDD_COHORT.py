@@ -262,11 +262,11 @@ for facility in facilities:
 dfb = pd.concat(vfacn) 
 df = pd.concat([dfa,dfb])
 df['DATE OF DELIVERY'] = pd.to_datetime(df['DATE OF DELIVERY'],errors = 'coerce')
-df['EMONTH'] = df['DATE OF DELIVERY'].strftime('%B')
+df['EMONTH'] = df['DATE OF DELIVERY'].dt.strftime('%B')
 df['EYEAR'] = df['DATE OF DELIVERY'].dt.year
 
 df['EDD'] = pd.to_datetime(df['EDD'],errors = 'coerce')
-df['EDMONTH'] = df['DATE OF DELIVERY'].strftime('%B')
+df['EDMONTH'] = df['DATE OF DELIVERY'].dt.strftime('%B')
 
 dfdel = df.copy()
 ###########################FILTERS
