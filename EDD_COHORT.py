@@ -194,15 +194,12 @@ extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH F
                            'DATE OF DELIVERY']]
 extrad['EDD'] = extrad['DATE OF DELIVERY']
 df = pd.concat([extrad, df])
-#st.write(extrad)
-st.write('BODY')
-st.write(df['EDD'])
-df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
-st.write('BODY')
-st.write(df['EDD'])
+
+df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%Y -%m-%d') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
 st.write(df['DYEAR'].value_counts())
+#df['EDD'] = df['EDD'].astype
 
 today = dt.datetime.now() # DATE TODAY
 dmonth = int(today.strftime('%m')) #CURRENT MONTH
