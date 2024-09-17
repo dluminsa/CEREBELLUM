@@ -344,6 +344,39 @@ st.plotly_chart(fig2)
 st.divider()
 
 
+#OF THE VISITORS, HOW MANY ARE FROM THE REGION
+visitors['MWP IDI DISTRICT?'].value_counts()
+visitors['REGIONAL'] = visitors['MWP IDI DISTRICT?'].map(mapper2)
+
+# Count occurrences of each category
+counts = visitors['REGIONAL'].value_counts()
+
+# Prepare labels with counts
+labels = [f"{label}: {count}" for label, count in counts.items()]
+
+# Create the donut chart
+fig3 = go.Figure(data=[go.Pie(
+    labels=counts.index,
+    values=counts.values,
+    hole=0.4,  # This creates the donut shape
+    marker=dict(
+        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
+    ),
+    text=labels,  # Use labels with counts
+    textinfo='text+percent',  # Display text and percentage
+    insidetextorientation='radial'  # Text orientation
+)])
+
+# Update layout
+fig3.update_layout(
+    title_text='PROPORTION OF VISITORS',
+    showlegend=True
+)
+
+# Display the chart
+st.plotly_chart(fig3)
+st.divider()
+
 
 
 
