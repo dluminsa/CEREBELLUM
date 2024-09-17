@@ -30,7 +30,7 @@ if 'logged_in' not in st.session_state:
 
 # If the user is logged in, show a welcome message and logout button
 if st.session_state['logged_in']:
-    st.success(f"Welcome, {st.session_state['username']}!")
+    st.success("WELCOME, YOU CAN NOW ACCESS THE LINE-LISTS")
     if st.button("Logout"):
         st.session_state['logged_in'] = False
         st.rerun()  # Refresh the app state to show the login form again
@@ -50,7 +50,7 @@ if not st.session_state['logged_in']:
             st.session_state['logged_in'] = True
             st.session_state['username'] = username
             st.success("Login successful!")
-            st.experimental_rerun()  # Refresh the app to remove the form after login
+            st.rerun()  # Refresh the app to remove the form after login
         else:
             st.error("Invalid username or password")
 if st.session_state['username'] and st.session_state['username']:
@@ -442,8 +442,8 @@ colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
 st.write(f'**TOTAL: {total} MOTHERS ARE IN COHORT**')
 st.markdown(f'**Of these {inc} were registered during ANC, {notc} were registered during delivery**')#, giving a total of {total} mothers**')
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
-st.plotly_chart(fig1)
-st.divider()
+#st.plotly_chart(fig1)
+#st.divider()
 
 #VISITORS
 df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
@@ -483,8 +483,8 @@ fig2.update_layout(
 cola,colb = st.columns([1,4])
 colb.write('**PROPORTION OF VISITORS**')
 st.markdown(f'**Of the {inc + notc} mothers in cohort, {ourd} were from the same reporting facility, {theird} were visitors**')
-st.plotly_chart(fig2)
-st.divider()
+#st.plotly_chart(fig2)
+#st.divider()
 
 
 #OF THE VISITORS, HOW MANY ARE FROM THE REGION
@@ -521,8 +521,8 @@ fig3.update_layout(
 cola,colb = st.columns([1,4])
 colb.write('**VISITORS FROM WITHIN REGION VS FROM OUTSIDE**')
 st.markdown(f'**Of the {theird} visitors in cohort, {outd} were from within the region, {theird-outd} were from outside the region**')
-st.plotly_chart(fig3)
-st.divider()
+#st.plotly_chart(fig3)
+#st.divider()
 
 #OF THOSE THAT ARE DUE, HOW MANY ARE OURS, HOW MANY ARE VISITOR
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
@@ -546,8 +546,8 @@ fig4.update_layout(barmode='group', bargap=0, bargroupgap=0)
 cola,colb = st.columns([1,4])
 colb.write('**OF MOTHERS DUE, HOW MANY ARE VISITORS**')
 st.markdown(f'**Of the {duec} Mothers due, {dueo} are from within the same reporting facility, {duev} are visitors**')
-st.plotly_chart(fig4)
-st.divider()
+#st.plotly_chart(fig4)
+#st.divider()
 
 #CONTRIBUTION OF DISTRICTS TO VISITORS
 df['MWP IDI DISTRICT?'] = df['MWP IDI DISTRICT?'].astype(str)
@@ -571,8 +571,8 @@ fig5 = px.bar(district_counts,
 # Show plot
 cola,colb = st.columns([1,4])
 colb.write('**FOR DISTRICTS WITHIN, WHERE DO MOST VISITORS COME FROM**')
-st.plotly_chart(fig5)
-st.divider()
+#st.plotly_chart(fig5)
+#st.divider()
 
 # ourscount =ours['IDI SUPPORTED DISTRICT'].value_counts()
 # ourscount = ourscount.reset_index()
@@ -611,8 +611,8 @@ fig7 = px.bar(
 )
 
 # To display the figure
-st.plotly_chart(fig7)
-st.divider()
+#st.plotly_chart(fig7)
+#st.divider()
 
 #OF THOSE THAT COME FROM OUR REGION, HOW MANY COME FROM OUR FACILITIES
 ours['FROM IDI FACILITY?'] = ours['FROM IDI FACILITY?'].astype(str)
@@ -650,8 +650,8 @@ fig8.update_layout(
 cola,colb = st.columns([1,4])
 colb.write('**OF VISITORS FROM OUR REGION, HOW MANY ARE FROM OUR FACILITIES**')
 st.markdown(f'**Of the {ourt} visitors from within our region, {ourc} are from within IDI supported facilities, {ourt-ourc} are from non IDI facilities**')
-st.plotly_chart(fig8)
-st.divider()
+#st.plotly_chart(fig8)
+#st.divider()
 
 
 #of our facilities, where do most come from
@@ -677,8 +677,8 @@ fig9 = px.bar(
 
 # To display the figure
 # Display the chart
-st.plotly_chart(fig9)
-st.divider()
+#st.plotly_chart(fig9)
+#st.divider()
 
 ###DELIVERY
 #OF THOSE THAT HAVE DELIVERED, HOW MANY ARE DUE
@@ -724,8 +724,8 @@ fig10.update_layout(
 cola,colb = st.columns([1,4])
 colb.write('**OF THE DELIVERIES, HOW MANY WERE LIVE BIRTHS**')
 st.markdown(f'**Of the {devd} Deliveries, {lived} were live births, {devd -lived} were lost**')
-st.plotly_chart(fig10)
-st.divider()
+#st.plotly_chart(fig10)
+#st.divider()
 
 #OF THOSE THAT HAVE DELIVERED, HOW MANY HAVE HAD A PCR DONE FOR THEIR BABIES
 live = dfdel[dfdel['OUTCOME'] == 'LIVE BIRTH'].copy()
@@ -788,5 +788,5 @@ colb.write('**WATER FALL ANALYSIS OF DELIVERIES VS PCR DONE**')
 st.write(f'**TOTAL: {totallive} MOTHERS HAVE HAD LIVE BIRTHS**')
 st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
 st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
-st.plotly_chart(fig)
-st.divider()
+#st.plotly_chart(fig)
+#st.divider()
