@@ -8,7 +8,7 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 import bcrypt
-st.success('**Created by LUMINSA DESIRE**')
+st.info('**Created by LUMINSA DESIRE**')
 # Example hashed password for "password123" using bcrypt
 hashed_password = bcrypt.hashpw("pmtct8910".encode('utf-8'), bcrypt.gensalt())
 
