@@ -29,7 +29,7 @@ if 'pm_df' not in st.session_state:
           df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
           dfa = df[df['IS THIS HER PARENT FACILITY?']=='YES'].copy()
           dfb = df[df['IS THIS HER PARENT FACILITY?']=='NO'].copy()
-          
+      
           dfs=[]
           faci = dfa['HEALTH FACILITY'].unique()
           for facility in faci:
@@ -70,7 +70,7 @@ if 'pm_df' not in st.session_state:
           st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
           st.stop()
 
-if st.session_state.de_df not st.seesion:     
+if st.session_state.de_df not in st.seesion:     
      try:
         #cola,colb= st.columns(2)
         conn = st.connection('gsheets', type=GSheetsConnection)
@@ -88,8 +88,8 @@ if 'pc_df' not in st.session_state:
         conn = st.connection('gsheets', type=GSheetsConnection)
         exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
         pcr = exist.dropna(how='all')
-        pcr = st.session_state.pc_df
         st.session_state.pc_df = pcr
+        pcr = st.session_state.pc_df
      except:
          st.write("POOR NETWORK, COULDN'T CONNECT TO PCR DATABASE")
          st.stop()
