@@ -388,7 +388,7 @@ fig1.update_layout(
     yaxis=dict(automargin=True)
 )
 # Show the plot
-cola,colb = st.columns([1,2])
+cola,colb = st.columns([1,4])
 colb.write('WATER FALL ANALYSIS OF THE COHORT')
 st.markdown(f'**{inc} mothers were registered during ANC, {notc} were registered during delivery, giving a total of {total} mothers**')
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
