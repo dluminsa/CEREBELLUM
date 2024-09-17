@@ -444,7 +444,7 @@ visitors['REGIONAL'] = visitors['MWP IDI DISTRICT?'].map(mapper2)
 
 # Count occurrences of each category
 counts = visitors['REGIONAL'].value_counts()
-
+outd =int( visitors[visitors['REGIONAL']=='REGION'].shape[0])
 # Prepare labels with counts
 labels = [f"{label}: {count}" for label, count in counts.items()]
 
@@ -463,13 +463,17 @@ fig3 = go.Figure(data=[go.Pie(
 
 # Update layout
 fig3.update_layout(
-    title_text='PROPORTION OF VISITORS',
+    title_text='',
     showlegend=True
 )
 
 # Display the chart
+cola,colb = st.columns([1,4])
+colb.write('**VISITORS FROM WITHIN REGION VS FROM OUTSIDE**')
+st.markdown(f'**Of the {theird} visitors in cohort, {outd} were from within the region, {theird-outd} were from outside the region**')
 st.plotly_chart(fig3)
 st.divider()
+
 #OF THOSE THAT ARE DUE, HOW MANY ARE OURS, HOW MANY ARE VISITOR
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
 notdelivered['IS THIS HER PARENT FACILITY?'] =notdelivered['IS THIS HER PARENT FACILITY?'].astype(str)
