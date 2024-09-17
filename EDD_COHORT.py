@@ -406,6 +406,8 @@ df['VISITORS'] = df['IS THIS HER PARENT FACILITY?'].map(mapper)
 
 # Count occurrences of each category
 counts = df['VISITORS'].value_counts()
+ourd = int(df[df['VISITORS']=='OURS'].shape[0])
+theird = int(df[df['VISITORS']=='VISITORS'].shape[0])
 
 # Prepare labels with counts
 labels = [f"{label}: {count}" for label, count in counts.items()]
@@ -425,9 +427,12 @@ fig2 = go.Figure(data=[go.Pie(
 
 # Update layout
 fig2.update_layout(
-    title_text='PROPORTION OF VISITORS',
+    title_text='',
     showlegend=True
 )
+cola,colb = st.columns([1,4])
+colb.write('**PROPORTION OF VISITORS**')
+st.markdown(f'**Of the {inc + notc} mothers in cohort, {ourd} were from the same reporting facility, {theird} were visitors**')
 st.plotly_chart(fig2)
 st.divider()
 
