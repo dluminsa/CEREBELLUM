@@ -197,7 +197,7 @@ def DUE(a,b):
             return 'DUE'
     else:
         return 'DUE'
-df[['DMONTH', 'DYEAR']] = df[['DMONTH', 'DYEAR']].astype(int)
+df[['DMONTH', 'DYEAR']] = df[['DMONTH', 'DYEAR']].apply(pd.to_numeric, errors='coerce')#astype(int)
 df['DUE'] = df.apply(lambda wee: DUE(wee['DYEAR'],wee['DMONTH']), axis=1) #APP;Y ABOVE FORMULA TO DETERMINE WHO IS DUE
 due = df[df['DUE'] == 'NOT DUE'].copy()
 ###### PCR SECTION
