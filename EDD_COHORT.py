@@ -193,6 +193,7 @@ df = pd.concat([extrad, df])
 df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
 df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
+st.write(df['DYEAR'].value_counts())
 
 today = dt.datetime.now() # DATE TODAY
 dmonth = int(today.strftime('%m')) #CURRENT MONTH
