@@ -469,9 +469,9 @@ duevisitors = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='NO'].c
 duev = duevisitors.shape[0]
 
 colb.write('**OF MOTHERS DUE, HOW MANY ARE VISITORS**')
-st.markdown(f'**There are {duev} due mothers who are visitors**')
+st.markdown(f'**There are {duev} mothers who are due and are visitors**')
 with st.expander ('Click here to see and download due visitors'):
-    duevs = duevs.set_index('FACILITY DISTRICT')
+    #duevs = duevs.set_index('FACILITY DISTRICT')
     st.write(duevs.head(3))
     data = duevs.to_csv(index=False)
     st.download_button(
