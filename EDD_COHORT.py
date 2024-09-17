@@ -421,6 +421,193 @@ fig5 = px.bar(district_counts,
 # Show plot
 st.plotly_chart(fig5)
 st.divider()
+ourscount =ours['IDI SUPPORTED DISTRICT'].value_counts()
+ourscount = ourscount.reset_index()
+ourscount.columns = ['DISTRICT', 'VISITORS']
+ourscount = ourscount.sort_values(by= ['VISITORS'])
+# Assuming `dcount_df` contains your data
+fig6 = px.bar(
+    ourscount,
+    x='VISITORS',
+    y='DISTRICT',
+    orientation='h',
+    title='REGIONAL DISTRICTS WHERE MOST VISITORS COME FROM',
+    labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
+)
+st.plotly_chart(fig6)
+st.divider()
+
+theirscount = theirs['OTHER DISTRICT'].value_counts()
+theirscount  = theirscount .reset_index()
+theirscount.columns = ['DISTRICT', 'VISITORS']
+theirscounta = theirscount[theirscount['VISITORS']>3].copy()
+theirscountb = theirscount[theirscount['VISITORS']<4].copy()
+totalothers = theirscount['VISITORS'].sum()
+addothers = pd.DataFrame({'DISTRICT': 'OTHERS',
+                          'VISITORS': [totalothers]})
+theirscount = pd.concat([theirscounta,addothers])
+theirscount = theirscount.sort_values(by= ['VISITORS'])
+# Assuming `dcount_df` contains your data
+fig7 = px.bar(
+    theirscount,
+    x='VISITORS',
+    y='DISTRICT',
+    orientation='h',
+    title='OUTSIDE DISTRICTS WHERE MOST VISITORS COME FROM',
+    labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
+)
+
+# To display the figure
+st.plotly_chart(fig7)
+st.divider()
+#OF THOSE THAT COME FROM OUR REGION, HOW MANY COME FROM OUR FACILITIES
+ours['FROM IDI FACILITY?'] = ours['FROM IDI FACILITY?'].astype(str)
+map2 = {'YES': 'OUR FACILITIES', 'NO': 'OTHER FACILITIES'}
+ours['FROM'] = ours['FROM IDI FACILITY?'].map(map2)
+# Count occurrences of each category
+counts = ours['FROM'].value_counts()
+
+# Prepare labels with counts
+labels = [f"{label}: {count}" for label, count in counts.items()]
+
+# Create the donut chart
+fig8 = go.Figure(data=[go.Pie(
+    labels=counts.index,
+    values=counts.values,
+    hole=0.4,  # This creates the donut shape
+    marker=dict(
+        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
+    ),
+    text=labels,  # Use labels with counts
+    textinfo='text+percent',  # Display text and percentage
+    insidetextorientation='radial'  # Text orientation
+)])
+
+# Update layout
+fig8.update_layout(
+    title_text='PROPORTION OF VISITORS',
+    showlegend=True
+)
+
+# Display the chart
+st.plotly_chart(fig8)
+st.divider()
+#of our facilities, where do most come from
+ourfacilities = ours[ours['FROM IDI FACILITY?']=='YES'].copy()
+ourfacilcount =ourfacilities['IDI PARENT FACILITY?'].value_counts()
+ourfacilcount = ourfacilcount.reset_index()
+ourfacilcount.columns = ['OUR FACILITY', 'VISITORS']
+ourfacilcounta = ourfacilcount[ourfacilcount['VISITORS']>7].copy()
+ourfacilcountb = ourfacilcount[ourfacilcount['VISITORS']<8].copy()
+ourfacil_others = ourfacilcountb['VISITORS'].sum()
+ourfacilcountb = pd.DataFrame({'OUR FACILITY': 'OTHERS', 'VISITORS': [ourfacil_others]})
+allourfacility = pd.concat([ourfacilcounta,ourfacilcountb])
+allourfacility = allourfacility.sort_values(by = ['VISITORS'])
+# Assuming `dcount_df` contains your data
+fig9 = px.bar(
+    allourfacility,
+    x='VISITORS',
+    y='OUR FACILITY',
+    orientation='h',
+    title='OUTSIDE DISTRICTS WHERE MOST VISITORS COME FROM',
+    labels={'OUR FACILITY': 'TXML Value', 'VISITORS': 'Facility'}
+)
+
+# To display the figure
+# Display the chart
+st.plotly_chart(fig9)
+st.divider()
+###DELIVERY
+#OF THOSE THAT HAVE DELIVERED, HOW MANY ARE DUE
+df['OUTCOME'] = df['OUTCOME'].astype(str)
+delivered = df[df['OUTCOME']!='NOT'].copy()
+delived = delivered['OUTCOME'].value_counts().reset_index()
+df['OUTCOME'].value_counts()
+delivered = delivered[['OUTCOME']].copy()
+
+# Count occurrences of each category
+counts = delivered['OUTCOME'].value_counts()
+
+# Prepare labels with counts
+labels = [f"{label}: {count}" for label, count in counts.items()]
+
+# Create the donut chart
+fig10 = go.Figure(data=[go.Pie(
+    labels=counts.index,
+    values=counts.values,
+    hole=0.3,  # This creates the donut shape
+    marker=dict(
+        colors=[blue', 'red', 'green', 'purple', 'yellow', 'pink']  # Colors for 'YES' and 'NO'
+    ),
+    text=labels,  # Use labels with counts
+    textinfo='text+percent',  # Display text and percentage
+    insidetextorientation='radial'  # Text orientation
+)])
+
+# Update layout
+fig10.update_layout(
+    title_text='PROPORTION OF VISITORS',
+    showlegend=True
+)
+
+# Display the chart
+st.plotly_chart(fig10)
+st.divider()
+#OF THOSE THAT HAVE DELIVERED, HOW MANY HAVE HAD A PCR DONE FOR THEIR BABIES
+live = df[df['OUTCOME'] == 'LIVE BIRTH'].copy()
+totallive = live.shape[0]
+nopcr = live[live['AGE AT PCR'].isnull()].copy()
+totalnopcr = nopcr.shape[0]
+withpcr = live[~live['AGE AT PCR'].isnull()].copy()
+totalpcr = withpcr.shape[0]
+labels = ["TOTAL LIVE BIRTHS", "TOTAL WITH PCR", "NOT DUE", "DUE"]
+today = datetime.today()
+
+# Subtract DATE OF DELIVERY from today's date and convert to days
+nopcr['TME'] = (today - nopcr['DATE OF DELIVERY']).dt.days
+#of those with no pcr, how many are due
+def pcr(a):
+    if a<61:
+        return 'DUE'
+    else:
+        return 'NOT DUE'
+nopcr['TME'] = nopcr['TME'].astype(int)
+nopcr['PCR DUE'] = nopcr['TME'].apply(pcr)
+nopcr['PCR DUE'] = nopcr['PCR DUE'].astype(str)
+pcrdue = nopcr[nopcr['PCR DUE'] == 'DUE']
+totalpcrdue = pcrdue.shape[0]
+pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
+totalpcrnotdue = pcrnotdue.shape[0]
+values = [totallive, -totalpcr, -totalpcrnotdue,-totalpcrdue]
+measure = ["absolute", "relative","relative", "total"]
+
+# Create the waterfall chart
+fig = go.Figure(go.Waterfall(
+    name="Waterfall",
+    orientation="v",
+    measure=measure,
+    x=labels,
+    textposition="outside",
+    text=[f"{v}" for v in values],
+    y=values
+))
+
+# Add titles and labels and adjust layout properties
+fig.update_layout(
+    title="WATERFALL ANALYSIS OF THE COHORT",
+    xaxis_title="Categories",
+    yaxis_title="Values",
+    showlegend=True,
+    height=425,  # Adjust height to ensure the chart fits well
+    margin=dict(l=20, r=20, t=60, b=20),  # Adjust margins to prevent clipping
+    yaxis=dict(automargin=True)
+)
+# Show the plot
+#fig.show()
+#st.title("Waterfall Chart in Streamlit")
+st.plotly_chart(fig)
+st.divider()
+
 
 
 
