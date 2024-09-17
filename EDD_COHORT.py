@@ -282,9 +282,9 @@ if not district:
     dfj2 = dfj.copy()
     dfdel2 = dfdel.copy()
 else:
-    df2 = df[df['DISTRICT'].isin(district)].copy()
+    df2 = df[df['FACILITY DISTRICT'].isin(district)].copy()
     dfj2 = dfj[dfj['DISTRICT'].isin(district)].copy()
-    dfdel2 = dfdel[dfdel['DISTRICT'].isin(district)].copy()
+    dfdel2 = dfdel[dfdel['FACILITY DISTRICT'].isin(district)].copy()
 
 #create for facility
 facility = st.sidebar.multiselect('**Select a facility**', dfj2['FACILITY'].unique())
@@ -327,8 +327,8 @@ fdfd = dfdel5.copy()
 
 # Apply filters based on selected criteria
 if district:
-    fdf = fdf[fdf['DISTRICT'].isin(district)]
-    fdfd = fdfd[fdfd['DISTRICT'].isin(district)]
+    fdf = fdf[fdf['FACILITY DISTRICT'].isin(district)]
+    fdfd = fdfd[fdfd['FACILITY DISTRICT'].isin(district)]
 
 if facility:
     fdf = fdf[fdf['HEALTH FACILITY'].isin(facility)]
