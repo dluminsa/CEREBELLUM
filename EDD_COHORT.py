@@ -565,6 +565,7 @@ labels = ["TOTAL LIVE BIRTHS", "TOTAL WITH PCR", "NOT DUE", "DUE"]
 today = datetime.today()
 
 # Subtract DATE OF DELIVERY from today's date and convert to days
+nopcr['DATE OF DELIVERY'] = pd.to_datetime(nopcr['DATE OF DELIVERY'], errors='coerce')
 nopcr['TME'] = (today - nopcr['DATE OF DELIVERY']).dt.days
 #of those with no pcr, how many are due
 def pcr(a):
