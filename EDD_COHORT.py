@@ -388,6 +388,8 @@ fig1.update_layout(
     yaxis=dict(automargin=True)
 )
 # Show the plot
+st.markdown(f'**{inc} mothers were registered during ANC, {notc} were registered during delivery, giving a total of {total} mothers**')
+st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
 st.plotly_chart(fig1)
 st.divider()
 
