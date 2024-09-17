@@ -7,16 +7,20 @@ import datetime as dt
 from IPython.display import display
 import streamlit as st
 from datetime import datetime
+import bcrypt
 
-# Fake user database (for demonstration)
+# Example hashed password for "password123" using bcrypt
+hashed_password = bcrypt.hashpw("password123".encode('utf-8'), bcrypt.gensalt())
+
 USER_CREDENTIALS = {
-    'admin': 'password123',  # username: password
+    'admin': hashed_password,  # Store hashed password
 }
 
-# Function to validate user credentials
 def validate_login(username, password):
-    if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
-        return True
+    if username in USER_CREDENTIALS:
+        # Compare the hashed password
+        if bcrypt.checkpw(password.encode('utf-8'), USER_CREDENTIALS[username]):
+            return True
     return False
 
 # Initialize session state for login status
@@ -24,12 +28,15 @@ if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
     st.session_state['username'] = ''
 
-# If logged in, display content
+# If the user is logged in, show a welcome message and logout button
 if st.session_state['logged_in']:
-    st.write(f"Welcome {st.session_state['username']}!")
-    st.button("Logout", on_click=lambda: st.session_state.update(logged_in=False))
-else:
-    # Create login form
+    st.success(f"Welcome, {st.session_state['username']}!")
+    if st.button("Logout"):
+        st.session_state['logged_in'] = False
+        st.rerun()  # Refresh the app state to show the login form again
+
+# If the user is not logged in, show the login form
+if not st.session_state['logged_in']:
     st.header("Login")
 
     with st.form("login_form"):
@@ -43,26 +50,13 @@ else:
             st.session_state['logged_in'] = True
             st.session_state['username'] = username
             st.success("Login successful!")
+            st.experimental_rerun()  # Refresh the app to remove the form after login
         else:
             st.error("Invalid username or password")
-
-
-
-#cola,colb,colc = st.columns([1,2,1])
-
-# with colb:
-#   with st.form(key = 'pass'):
-#     password = st.text_input('**IN PUT PASSWORD BEFORE LOGIN**', placeholder='password')
-#     submit = st.form_submit_button(label='Login')
-
-# # Check if the form was submitted and process the password
-# if submit:
-#     if password == 'PMTCT8910':
-#         st.write('Password entered successfully!')
-#     else:
-#         st.write('Please enter a password before logging in.')
-#         st.stop()
-
+if st.session_state['username'] and st.session_state['username']:
+    pass
+else:
+    st.stop()
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
 cola, colb = st.columns([1,4])
