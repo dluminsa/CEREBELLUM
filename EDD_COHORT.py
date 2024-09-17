@@ -399,6 +399,30 @@ fig4.update_layout(barmode='group', bargap=0, bargroupgap=0)
 st.plotly_chart(fig4)
 st.divider()
 
+#CONTRIBUTION OF DISTRICTS TO VISITORS
+df['MWP IDI DISTRICT?'] = df['MWP IDI DISTRICT?'].astype(str)
+df['MWP IDI DISTRICT?'].value_counts()
+ours = df[df['MWP IDI DISTRICT?']=='YES'].copy()
+theirs = df[df['MWP IDI DISTRICT?']=='NO'].copy()
+dcount = ours['IDI SUPPORTED DISTRICT'].value_counts()
+district_counts =  ours['IDI SUPPORTED DISTRICT'].value_counts().reset_index()
+district_counts.columns = ['District', 'Count']
+district_counts = district_counts.sort_values(by='Count')#, ascending=False)
+
+# Create horizontal bar graph
+fig5 = px.bar(district_counts, 
+             x='Count', 
+             y='District', 
+             orientation='h', 
+             title='Number of Occurrences of Each District',
+             labels={'Count': 'Number of Occurrences', 'District': 'District'},
+             color_discrete_sequence=['#1f77b4'])  # Use a single color
+
+# Show plot
+st.plotly_chart(fig5)
+st.divider()
+
+
 
 
 
