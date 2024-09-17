@@ -258,30 +258,44 @@ for facility in facilities:
     
     dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
     vfacn.append(dfz)
+     
 dfb = pd.concat(vfacn) 
 df = pd.concat([dfa,dfb])
+df['DATE OF DELIVERY'] = pd.to_datetime(df['DATE OF DELIVERY'],errors = 'coerce')
+df['EMONTH'] = df['DATE OF DELIVERY'].strftime('%B')
+df['EYEAR'] = df['DATE OF DELIVERY'].dt.year
+
+df['EDD'] = pd.to_datetime(df['EDD'],errors = 'coerce')
+df['EDMONTH'] = df['DATE OF DELIVERY'].strftime('%B')
+
+dfdel = df.copy()
 ###########################FILTERS
 
 file2 = r'BACKLOG.csv'
-dfJ = pd.read_csv(file2)
+dfj = pd.read_csv(file2)
+
 st.sidebar.subheader('Filter from here ')
 district = st.sidebar.multiselect('Pick a DISTRICT', dfj['DISTRICT'].unique())
 
 if not district:
     df2 = df.copy()
     dfj2 = dfj.copy()
+    dfdel2 = dfdel.copy()
 else:
-    df2 = df[df['DISTRICT'].isin(district)]
-    dfj2 = dfj[dfj['DISTRICT'].isin(district)]
+    df2 = df[df['DISTRICT'].isin(district)].copy()
+    dfj2 = dfj[dfj['DISTRICT'].isin(district)].copy()
+    dfdel2 = dfdel[dfdel['DISTRICT'].isin(district)].copy()
 
 #create for facility
 facility = st.sidebar.multiselect('**Select a facility**', dfj2['FACILITY'].unique())
 if not facility:
     df3 = df2.copy()
     dfj3 = dfj2.copy()
+    dfdel3 = dfdel2.copy()
 else:
-    df3 = df2[df2['FACILITY'].isin(facility)]
-    dfj3 = dfj2[dfj2['FACILITY'].isin(facility)]
+    df3 = df2[df2['FACILITY'].isin(facility)].cop()
+    dfj3 = dfj2[dfj2['FACILITY'].isin(facility)].copy()
+    dfdel3 = dfdel2[dfdel2['FACILITY'].isin(facility)].copy()
  
 #for year
 year = st.sidebar.multiselect('**Select a year**', dfj3['YEAR'].unique())
@@ -289,21 +303,48 @@ year = st.sidebar.multiselect('**Select a year**', dfj3['YEAR'].unique())
 if not year:
     df4 = df3.copy()
     dfj4 = dfj3.copy()
+    dfdel4 = dfdel3.copy()
 else:
-    df4 = df3[df3['DYEAR'].isin(year)]
-    dfj4 = dfj3[dfj3['YEAR'].isin(year)]
+    df4 = df3[df3['DYEAR'].isin(year)].copy()
+    dfj4 = dfj3[dfj3['YEAR'].isin(year)].copy()
+    dfdel4 = dfdel2[dfdel2['EYEAR'].isin(year)].copy()
 
 #for month
 month = st.sidebar.multiselect('**Select a month**', dfj4['MONTH'].unique())
-vvvv
+
 if not month:
     df5 = df4.copy()
     dfj5 = dfj4.copy()
+    dfdel5 = dfdel4.copy()
 else:
-    df5 = df4[df4['DMONTH'].isin(month)]
-    dfj5 = dfj4[dfj4['MONTH'].isin(month)]
+    df5 = df4[df4['EDMONTH'].isin(month)].copy()
+    dfj5 = dfj4[dfj4['MONTH'].isin(month)].copy()
+    dfdel5 = dfdel4[dfdel4['EMONTH'].isin(month)].copy()
+#########################FILTERED DF
+# Base DataFrame to filter
+fdf = df5.copy()
+fdfd = dfdel5.copy()
+
+# Apply filters based on selected criteria
+if district:
+    fdf = fdf[fdf['DISTRICT'].isin(district)]
+    fdfd = fdfd[fdfd['DISTRICT'].isin(district)]
+
+if facility:
+    fdf = fdf[fdf['FACILITY'].isin(facility)]
+    fdfd = fdfd[fdfd['FACILITY'].isin(facility)]
+if year:
+    fdf = fdf[fdf['DYEAR'].isin(year)]
+    fdfd = fdfd[fdfd['EYEAR'].isin(year)]
+
+if month:
+    fdf = fdf[fdf['EDMONTH'].isin(month)]
+    fdfd = fdfd[fdfd['EMONTH'].isin(month)]
+df = fdf.copy()
+dfdel = fdfd.copy()
 
 ################################GRAPHING
+
 df['IN COHORT?'] = df['IN COHORT?'].astype(str)
 incohort = df[df['IN COHORT?']!='NO'].copy()
 inc = int(incohort.shape[0])
@@ -561,12 +602,14 @@ fig9 = px.bar(
 # Display the chart
 st.plotly_chart(fig9)
 st.divider()
+
 ###DELIVERY
 #OF THOSE THAT HAVE DELIVERED, HOW MANY ARE DUE
-df['OUTCOME'] = df['OUTCOME'].astype(str)
-delivered = df[df['OUTCOME']!='NOT'].copy()
+
+dfdel['OUTCOME'] = dfdel['OUTCOME'].astype(str)
+delivered = dfdel[dfdel['OUTCOME']!='NOT'].copy()
 delived = delivered['OUTCOME'].value_counts().reset_index()
-df['OUTCOME'].value_counts()
+
 delivered = delivered[['OUTCOME']].copy()
 
 # Count occurrences of each category
@@ -598,7 +641,7 @@ fig10.update_layout(
 st.plotly_chart(fig10)
 st.divider()
 #OF THOSE THAT HAVE DELIVERED, HOW MANY HAVE HAD A PCR DONE FOR THEIR BABIES
-live = df[df['OUTCOME'] == 'LIVE BIRTH'].copy()
+live = dfdel[dfdel['OUTCOME'] == 'LIVE BIRTH'].copy()
 totallive = live.shape[0]
 nopcr = live[live['AGE AT PCR'].isnull()].copy()
 totalnopcr = nopcr.shape[0]
