@@ -192,11 +192,12 @@ extrad = extrad[['DATE OF SUBMISSION', 'CLUSTER' ,'FACILITY DISTRICT', 'HEALTH F
                             'IDI SUPPORTED DISTRICT', 'FROM IDI FACILITY?', 'IDI PARENT FACILITY?','UNIQUE ID',
                             'OTHER PARENT FACILITY','OTHER DISTRICT','OUTSIDE FACILITY', 'NAME', 'AGE', 'HER DISTRICT','VILLAGE', 'TELEPHONE','OUTCOME',
                            'DATE OF DELIVERY']]
+extrad['EDD'] = extrad[''DATE OF DELIVERY']
 df = pd.concat([extrad, df])
 #st.write(extrad)
 st.write('BODY')
 st.write(df['EDD'])
-df['EDD'] = pd.to_datetime(df['EDD'], errors='ignore', format = '%d -%m-%Y') #CONVERT edd to date time
+df['EDD'] = pd.to_datetime(df['EDD'], errors='coerce', format = '%d -%m-%Y') #CONVERT edd to date time
 st.write('BODY')
 st.write(df['EDD'])
 df['DMONTH'] = df['EDD'].dt.month # EDD MONTH
