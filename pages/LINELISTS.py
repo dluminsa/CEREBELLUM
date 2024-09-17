@@ -11,7 +11,7 @@ from datetime import datetime
 cola,colb,colc = st.columns([1,2,1])
 
 with colb:
-  with st.forms:
+  with st.form():
     password = st.text_input('**IN PUT PASSWORD BEFORE LOGIN**', placeholder='password')
 if not password:
   st.stop()
