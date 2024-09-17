@@ -8,20 +8,60 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 
-cola,colb,colc = st.columns([1,2,1])
+# Fake user database (for demonstration)
+USER_CREDENTIALS = {
+    'admin': 'password123',  # username: password
+}
 
-with colb:
-  with st.form(key = 'pass'):
-    password = st.text_input('**IN PUT PASSWORD BEFORE LOGIN**', placeholder='password')
-    submit = st.form_submit_button(label='Login')
+# Function to validate user credentials
+def validate_login(username, password):
+    if username in USER_CREDENTIALS and USER_CREDENTIALS[username] == password:
+        return True
+    return False
 
-# Check if the form was submitted and process the password
-if submit:
-    if password == 'PMTCT8910':
-        st.write('Password entered successfully!')
-    else:
-        st.write('Please enter a password before logging in.')
-        st.stop()
+# Initialize session state for login status
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
+    st.session_state['username'] = ''
+
+# If logged in, display content
+if st.session_state['logged_in']:
+    st.write(f"Welcome {st.session_state['username']}!")
+    st.button("Logout", on_click=lambda: st.session_state.update(logged_in=False))
+else:
+    # Create login form
+    st.header("Login")
+
+    with st.form("login_form"):
+        username = st.text_input("Username")
+        password = st.text_input("Password", type="password")
+        submit_button = st.form_submit_button(label="Login")
+
+    # Validate login on form submission
+    if submit_button:
+        if validate_login(username, password):
+            st.session_state['logged_in'] = True
+            st.session_state['username'] = username
+            st.success("Login successful!")
+        else:
+            st.error("Invalid username or password")
+
+
+
+#cola,colb,colc = st.columns([1,2,1])
+
+# with colb:
+#   with st.form(key = 'pass'):
+#     password = st.text_input('**IN PUT PASSWORD BEFORE LOGIN**', placeholder='password')
+#     submit = st.form_submit_button(label='Login')
+
+# # Check if the form was submitted and process the password
+# if submit:
+#     if password == 'PMTCT8910':
+#         st.write('Password entered successfully!')
+#     else:
+#         st.write('Please enter a password before logging in.')
+#         st.stop()
 
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
