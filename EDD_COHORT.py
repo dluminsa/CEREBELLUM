@@ -515,28 +515,31 @@ fig5 = px.bar(district_counts,
              x='Count', 
              y='District', 
              orientation='h', 
-             title='Number of Occurrences of Each District',
-             labels={'Count': 'Number of Occurrences', 'District': 'District'},
+             title='',
+             labels={'Count': 'Number of visitors', 'District': 'DISTRICT'},
              color_discrete_sequence=['#1f77b4'])  # Use a single color
 
 # Show plot
+cola,colb = st.columns([1,4])
+colb.write('**FOR DISTRICTS WITHIN, WHERE DO MOST VISITORS COME FROM**')
 st.plotly_chart(fig5)
 st.divider()
-ourscount =ours['IDI SUPPORTED DISTRICT'].value_counts()
-ourscount = ourscount.reset_index()
-ourscount.columns = ['DISTRICT', 'VISITORS']
-ourscount = ourscount.sort_values(by= ['VISITORS'])
-# Assuming `dcount_df` contains your data
-fig6 = px.bar(
-    ourscount,
-    x='VISITORS',
-    y='DISTRICT',
-    orientation='h',
-    title='REGIONAL DISTRICTS WHERE MOST VISITORS COME FROM',
-    labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
-)
-st.plotly_chart(fig6)
-st.divider()
+
+# ourscount =ours['IDI SUPPORTED DISTRICT'].value_counts()
+# ourscount = ourscount.reset_index()
+# ourscount.columns = ['DISTRICT', 'VISITORS']
+# ourscount = ourscount.sort_values(by= ['VISITORS'])
+# # Assuming `dcount_df` contains your data
+# fig6 = px.bar(
+#     ourscount,
+#     x='VISITORS',
+#     y='DISTRICT',
+#     orientation='h',
+#     title='REGIONAL DISTRICTS WHERE MOST VISITORS COME FROM',
+#     labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
+# )
+# st.plotly_chart(fig6)
+# st.divider()
 
 theirscount = theirs['OTHER DISTRICT'].value_counts()
 theirscount  = theirscount .reset_index()
@@ -555,14 +558,18 @@ fig7 = px.bar(
     y='DISTRICT',
     orientation='h',
     title='OUTSIDE DISTRICTS WHERE MOST VISITORS COME FROM',
-    labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
+    labels={'DISTRICT': 'DISTRICT', 'VISITORS': 'No. of Visitors'}
 )
 
 # To display the figure
 st.plotly_chart(fig7)
 st.divider()
+
 #OF THOSE THAT COME FROM OUR REGION, HOW MANY COME FROM OUR FACILITIES
 ours['FROM IDI FACILITY?'] = ours['FROM IDI FACILITY?'].astype(str)
+ourt = int(ours.shape[0])
+ourc = int(ours[ours['FROM IDI FACILITY?']=='YES'].shape[0])
+
 map2 = {'YES': 'OUR FACILITIES', 'NO': 'OTHER FACILITIES'}
 ours['FROM'] = ours['FROM IDI FACILITY?'].map(map2)
 # Count occurrences of each category
@@ -586,13 +593,18 @@ fig8 = go.Figure(data=[go.Pie(
 
 # Update layout
 fig8.update_layout(
-    title_text='PROPORTION OF VISITORS',
+    #title_text='',
     showlegend=True
 )
 
 # Display the chart
+cola,colb = st.columns([1,4])
+colb.write('**OF VISITORS FROM OUR REGION, HOW MANY ARE FROM OUR FACILITIES**')
+st.markdown(f'**Of the {ourt} visitors from within our region, {ourc} are from within IDI supported facilities, {ourt-ourc} are from non IDI facilities**')
 st.plotly_chart(fig8)
 st.divider()
+
+
 #of our facilities, where do most come from
 ourfacilities = ours[ours['FROM IDI FACILITY?']=='YES'].copy()
 ourfacilcount =ourfacilities['IDI PARENT FACILITY?'].value_counts()
@@ -610,8 +622,8 @@ fig9 = px.bar(
     x='VISITORS',
     y='OUR FACILITY',
     orientation='h',
-    title='OUTSIDE DISTRICTS WHERE MOST VISITORS COME FROM',
-    labels={'OUR FACILITY': 'TXML Value', 'VISITORS': 'Facility'}
+    title='FOR VISITORS FROM OUR REGION, FROM WHICH FACILITIES DO THE VISITORS COME FROM',
+    labels={'OUR FACILITY': 'FACILITY', 'VISITORS': 'Visitors'}
 )
 
 # To display the figure
@@ -621,10 +633,16 @@ st.divider()
 
 ###DELIVERY
 #OF THOSE THAT HAVE DELIVERED, HOW MANY ARE DUE
+cola,colb = st.columns([1,4])
+colb.write('**DELIVERY SECTION**')
 
 dfdel['OUTCOME'] = dfdel['OUTCOME'].astype(str)
 delivered = dfdel[dfdel['OUTCOME']!='NOT'].copy()
+delivered = delivered[delivered['OUTCOME']!='nan'].copy()
 delived = delivered['OUTCOME'].value_counts().reset_index()
+
+devd = int(delivered.shape[0])
+lived = int(delivered[delivered['OUTCOME']=='LIVE BIRTH'].shape[0])
 
 delivered = delivered[['OUTCOME']].copy()
 
@@ -649,13 +667,17 @@ fig10 = go.Figure(data=[go.Pie(
 
 # Update layout
 fig10.update_layout(
-    title_text='PROPORTION OF VISITORS',
+    title_text='',
     showlegend=True
 )
 
 # Display the chart
+cola,colb = st.columns([1,4])
+colb.write('**OF THE DELIVERIES, HOW MANY WERE LIVE BIRTHS**')
+st.markdown(f'**Of the {devd} Deliveries, {lived} were live births, {devd -lived} were lost**')
 st.plotly_chart(fig10)
 st.divider()
+
 #OF THOSE THAT HAVE DELIVERED, HOW MANY HAVE HAD A PCR DONE FOR THEIR BABIES
 live = dfdel[dfdel['OUTCOME'] == 'LIVE BIRTH'].copy()
 totallive = live.shape[0]
@@ -671,19 +693,23 @@ nopcr['DATE OF DELIVERY'] = pd.to_datetime(nopcr['DATE OF DELIVERY'], errors='co
 nopcr['TME'] = (today - nopcr['DATE OF DELIVERY']).dt.days
 #of those with no pcr, how many are due
 def pcr(a):
-    if a<61:
+    if a<29:
+        return 'NOT DUE'
+    elif a<61:
         return 'DUE'
     else:
-        return 'NOT DUE'
+         return 'OVER DUE'
+         
 nopcr['TME'] = nopcr['TME'].astype(int)
 nopcr['PCR DUE'] = nopcr['TME'].apply(pcr)
 nopcr['PCR DUE'] = nopcr['PCR DUE'].astype(str)
 pcrdue = nopcr[nopcr['PCR DUE'] == 'DUE']
 totalpcrdue = pcrdue.shape[0]
 pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
+pcroverdue = nopcr[nopcr['PCR DUE'] == 'OVER DUE']
 totalpcrnotdue = pcrnotdue.shape[0]
-values = [totallive, -totalpcr, -totalpcrnotdue,-totalpcrdue]
-measure = ["absolute", "relative","relative", "total"]
+values = [totallive, -totalpcr, -totalpcrnotdue,-pcroverdue,-totalpcrdue]
+measure = ["absolute", "relative","relative", 'total',"total"]
 
 # Create the waterfall chart
 fig = go.Figure(go.Waterfall(
@@ -698,7 +724,7 @@ fig = go.Figure(go.Waterfall(
 
 # Add titles and labels and adjust layout properties
 fig.update_layout(
-    title="WATERFALL ANALYSIS OF THE COHORT",
+    title="",
     xaxis_title="Categories",
     yaxis_title="Values",
     showlegend=True,
@@ -707,8 +733,11 @@ fig.update_layout(
     yaxis=dict(automargin=True)
 )
 # Show the plot
-#fig.show()
-#st.title("Waterfall Chart in Streamlit")
+cola,colb = st.columns([1,4])
+colb.write('**WATER FALL ANALYSIS OF DELIVERIES VS PCR DONE**')
+st.write(f'**TOTAL: {totallive} MOTHERS HAVE HAD LIVE BIRTHS**')
+st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
+st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
 st.plotly_chart(fig)
 st.divider()
 
