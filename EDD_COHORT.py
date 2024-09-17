@@ -685,7 +685,7 @@ nopcr = live[live['AGE AT PCR'].isnull()].copy()
 totalnopcr = nopcr.shape[0]
 withpcr = live[~live['AGE AT PCR'].isnull()].copy()
 totalpcr = withpcr.shape[0]
-labels = ["TOTAL LIVE BIRTHS", "TOTAL WITH PCR", "NOT DUE", "DUE"]
+labels = ["TOTAL LIVE BIRTHS", "TOTAL WITH PCR", "NOT DUE", 'OVER DUE',"DUE"]
 today = datetime.today()
 
 # Subtract DATE OF DELIVERY from today's date and convert to days
@@ -709,8 +709,8 @@ pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
 pcroverdue = int(nopcr[nopcr['PCR DUE'] == 'OVER DUE'].shape[0])
 totalpcrnotdue = pcrnotdue.shape[0]
 
-values = [totallive, -totalpcr, -totalpcrnotdue, pcroverdue,totalpcrdue]
-measure = ["absolute", "relative","relative", 'relative',"total"]
+values = [totallive, -totalpcr, -totalpcrnotdue, -pcroverdue,-totalpcrdue]
+measure = ["absolute", "relative","relative", 'total',"total"]
 
 # Create the waterfall chart
 fig = go.Figure(go.Waterfall(
@@ -741,109 +741,6 @@ st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {
 st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
 st.plotly_chart(fig)
 st.divider()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         
-
-
-
-
-
-
-
-
-
-
-
-     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
