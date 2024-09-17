@@ -497,7 +497,6 @@ fig4.update_layout(barmode='group', bargap=0, bargroupgap=0)
 cola,colb = st.columns([1,4])
 colb.write('**OF MOTHERS DUE, HOW MANY ARE VISITORS**')
 st.markdown(f'**Of the {duec} Mothers due, {dueo} are from within the same reporting facility, {duev} are visitors**')
-st.plotly_chart(fig3)
 st.plotly_chart(fig4)
 st.divider()
 
