@@ -650,7 +650,6 @@ fig.update_layout(
 # Show the plot
 #fig.show()
 #st.title("Waterfall Chart in Streamlit")
-if:
 st.plotly_chart(fig)
 st.divider()
 
