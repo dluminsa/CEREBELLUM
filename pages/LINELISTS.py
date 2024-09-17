@@ -466,7 +466,7 @@ outd =int( visitors[visitors['REGIONAL']=='REGION'].shape[0])
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
 notdelivered['IS THIS HER PARENT FACILITY?'] =notdelivered['IS THIS HER PARENT FACILITY?'].astype(str)
 duevisitors = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='NO'].copy()
-duev = duevisitors.shape[0]
+duevs = duevisitors.shape[0]
 
 colb.write('**OF MOTHERS DUE, HOW MANY ARE VISITORS**')
 st.markdown(f'**There are {duev} mothers who are due and are visitors**')
@@ -481,185 +481,6 @@ with st.expander ('Click here to see and download due visitors'):
                        mime="text/csv")
 
 st.divider()
-
-#CONTRIBUTION OF DISTRICTS TO VISITORS
-df['MWP IDI DISTRICT?'] = df['MWP IDI DISTRICT?'].astype(str)
-df['MWP IDI DISTRICT?'].value_counts()
-ours = df[df['MWP IDI DISTRICT?']=='YES'].copy()
-theirs = df[df['MWP IDI DISTRICT?']=='NO'].copy()
-dcount = ours['IDI SUPPORTED DISTRICT'].value_counts()
-district_counts =  ours['IDI SUPPORTED DISTRICT'].value_counts().reset_index()
-district_counts.columns = ['District', 'Count']
-district_counts = district_counts.sort_values(by='Count')#, ascending=False)
-
-# Create horizontal bar graph
-fig5 = px.bar(district_counts, 
-             x='Count', 
-             y='District', 
-             orientation='h', 
-             title='',
-             labels={'Count': 'Number of visitors', 'District': 'DISTRICT'},
-             color_discrete_sequence=['#1f77b4'])  # Use a single color
-
-# Show plot
-cola,colb = st.columns([1,4])
-colb.write('**FOR DISTRICTS WITHIN, WHERE DO MOST VISITORS COME FROM**')
-#st.plotly_chart(fig5)
-#st.divider()
-
-# ourscount =ours['IDI SUPPORTED DISTRICT'].value_counts()
-# ourscount = ourscount.reset_index()
-# ourscount.columns = ['DISTRICT', 'VISITORS']
-# ourscount = ourscount.sort_values(by= ['VISITORS'])
-# # Assuming `dcount_df` contains your data
-# fig6 = px.bar(
-#     ourscount,
-#     x='VISITORS',
-#     y='DISTRICT',
-#     orientation='h',
-#     title='REGIONAL DISTRICTS WHERE MOST VISITORS COME FROM',
-#     labels={'DISTRICT': 'TXML Value', 'VISITORS': 'Facility'}
-# )
-# st.plotly_chart(fig6)
-# st.divider()
-
-theirscount = theirs['OTHER DISTRICT'].value_counts()
-theirscount  = theirscount .reset_index()
-theirscount.columns = ['DISTRICT', 'VISITORS']
-theirscounta = theirscount[theirscount['VISITORS']>3].copy()
-theirscountb = theirscount[theirscount['VISITORS']<4].copy()
-totalothers = theirscount['VISITORS'].sum()
-addothers = pd.DataFrame({'DISTRICT': 'OTHERS',
-                          'VISITORS': [totalothers]})
-theirscount = pd.concat([theirscounta,addothers])
-theirscount = theirscount.sort_values(by= ['VISITORS'])
-# Assuming `dcount_df` contains your data
-fig7 = px.bar(
-    theirscount,
-    x='VISITORS',
-    y='DISTRICT',
-    orientation='h',
-    title='OUTSIDE DISTRICTS WHERE MOST VISITORS COME FROM',
-    labels={'DISTRICT': 'DISTRICT', 'VISITORS': 'No. of Visitors'}
-)
-
-# To display the figure
-#st.plotly_chart(fig7)
-#st.divider()
-
-#OF THOSE THAT COME FROM OUR REGION, HOW MANY COME FROM OUR FACILITIES
-ours['FROM IDI FACILITY?'] = ours['FROM IDI FACILITY?'].astype(str)
-ourt = int(ours.shape[0])
-ourc = int(ours[ours['FROM IDI FACILITY?']=='YES'].shape[0])
-
-map2 = {'YES': 'OUR FACILITIES', 'NO': 'OTHER FACILITIES'}
-ours['FROM'] = ours['FROM IDI FACILITY?'].map(map2)
-# Count occurrences of each category
-counts = ours['FROM'].value_counts()
-
-# Prepare labels with counts
-labels = [f"{label}: {count}" for label, count in counts.items()]
-
-# Create the donut chart
-fig8 = go.Figure(data=[go.Pie(
-    labels=counts.index,
-    values=counts.values,
-    hole=0.4,  # This creates the donut shape
-    marker=dict(
-        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
-    ),
-    text=labels,  # Use labels with counts
-    textinfo='text+percent',  # Display text and percentage
-    insidetextorientation='radial'  # Text orientation
-)])
-
-# Update layout
-fig8.update_layout(
-    #title_text='',
-    showlegend=True
-)
-
-# Display the chart
-cola,colb = st.columns([1,4])
-colb.write('**OF VISITORS FROM OUR REGION, HOW MANY ARE FROM OUR FACILITIES**')
-st.markdown(f'**Of the {ourt} visitors from within our region, {ourc} are from within IDI supported facilities, {ourt-ourc} are from non IDI facilities**')
-#st.plotly_chart(fig8)
-#st.divider()
-
-
-#of our facilities, where do most come from
-ourfacilities = ours[ours['FROM IDI FACILITY?']=='YES'].copy()
-ourfacilcount =ourfacilities['IDI PARENT FACILITY?'].value_counts()
-ourfacilcount = ourfacilcount.reset_index()
-ourfacilcount.columns = ['OUR FACILITY', 'VISITORS']
-ourfacilcounta = ourfacilcount[ourfacilcount['VISITORS']>7].copy()
-ourfacilcountb = ourfacilcount[ourfacilcount['VISITORS']<8].copy()
-ourfacil_others = ourfacilcountb['VISITORS'].sum()
-ourfacilcountb = pd.DataFrame({'OUR FACILITY': 'OTHERS', 'VISITORS': [ourfacil_others]})
-allourfacility = pd.concat([ourfacilcounta,ourfacilcountb])
-allourfacility = allourfacility.sort_values(by = ['VISITORS'])
-# Assuming `dcount_df` contains your data
-fig9 = px.bar(
-    allourfacility,
-    x='VISITORS',
-    y='OUR FACILITY',
-    orientation='h',
-    title='FOR VISITORS FROM OUR REGION, FROM WHICH FACILITIES DO THE VISITORS COME FROM',
-    labels={'OUR FACILITY': 'FACILITY', 'VISITORS': 'Visitors'}
-)
-
-# To display the figure
-# Display the chart
-#st.plotly_chart(fig9)
-#st.divider()
-
-###DELIVERY
-#OF THOSE THAT HAVE DELIVERED, HOW MANY ARE DUE
-cola,colb = st.columns([1,4])
-colb.write('**DELIVERY SECTION**')
-
-dfdel['OUTCOME'] = dfdel['OUTCOME'].astype(str)
-delivered = dfdel[dfdel['OUTCOME']!='NOT'].copy()
-delivered = delivered[delivered['OUTCOME']!='nan'].copy()
-delived = delivered['OUTCOME'].value_counts().reset_index()
-
-devd = int(delivered.shape[0])
-lived = int(delivered[delivered['OUTCOME']=='LIVE BIRTH'].shape[0])
-
-delivered = delivered[['OUTCOME']].copy()
-
-# Count occurrences of each category
-counts = delivered['OUTCOME'].value_counts()
-
-# Prepare labels with counts
-labels = [f"{label}: {count}" for label, count in counts.items()]
-
-# Create the donut chart
-fig10 = go.Figure(data=[go.Pie(
-    labels=counts.index,
-    values=counts.values,
-    hole=0.3,  # This creates the donut shape
-    marker=dict(
-        colors=['blue', 'red', 'green', 'purple', 'yellow', 'pink']  # Colors for 'YES' and 'NO'
-    ),
-    text=labels,  # Use labels with counts
-    textinfo='text+percent',  # Display text and percentage
-    insidetextorientation='radial'  # Text orientation
-)])
-
-# Update layout
-fig10.update_layout(
-    title_text='',
-    showlegend=True
-)
-
-# Display the chart
-cola,colb = st.columns([1,4])
-colb.write('**OF THE DELIVERIES, HOW MANY WERE LIVE BIRTHS**')
-st.markdown(f'**Of the {devd} Deliveries, {lived} were live births, {devd -lived} were lost**')
-#st.plotly_chart(fig10)
-#st.divider()
-
 #OF THOSE THAT HAVE DELIVERED, HOW MANY HAVE HAD A PCR DONE FOR THEIR BABIES
 live = dfdel[dfdel['OUTCOME'] == 'LIVE BIRTH'].copy()
 totallive = live.shape[0]
@@ -667,7 +488,7 @@ nopcr = live[live['AGE AT PCR'].isnull()].copy()
 totalnopcr = nopcr.shape[0]
 withpcr = live[~live['AGE AT PCR'].isnull()].copy()
 totalpcr = withpcr.shape[0]
-labels = ["TOTAL LIVE BIRTHS", "TOTAL WITH PCR", "NOT DUE", 'OVER DUE',"DUE"]
+
 today = datetime.today()
 
 # Subtract DATE OF DELIVERY from today's date and convert to days
@@ -687,39 +508,40 @@ nopcr['PCR DUE'] = nopcr['TME'].apply(pcr)
 nopcr['PCR DUE'] = nopcr['PCR DUE'].astype(str)
 pcrdue = nopcr[nopcr['PCR DUE'] == 'DUE']
 totalpcrdue = pcrdue.shape[0]
-pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE']
+pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE'].copy
 pcroverdue = int(nopcr[nopcr['PCR DUE'] == 'OVER DUE'].shape[0])
 totalpcrnotdue = pcrnotdue.shape[0]
+pcroverdues = nopcr[nopcr['PCR DUE'] == 'OVER DUE']
 
-values = [totallive, -totalpcr, -totalpcrnotdue, pcroverdue,totalpcrdue]
-measure = ["absolute", "relative","relative", 'absolute',"relative"]
-
-# Create the waterfall chart
-fig = go.Figure(go.Waterfall(
-    name="Waterfall",
-    orientation="v",
-    measure=measure,
-    x=labels,
-    textposition="outside",
-    text=[f"{v}" for v in values],
-    y=values
-))
-
-# Add titles and labels and adjust layout properties
-fig.update_layout(
-    title="",
-    xaxis_title="Categories",
-    yaxis_title="Values",
-    showlegend=True,
-    height=425,  # Adjust height to ensure the chart fits well
-    margin=dict(l=20, r=20, t=60, b=20),  # Adjust margins to prevent clipping
-    yaxis=dict(automargin=True)
-)
 # Show the plot
 cola,colb = st.columns([1,4])
 colb.write('**WATER FALL ANALYSIS OF DELIVERIES VS PCR DONE**')
 st.write(f'**TOTAL: {totallive} MOTHERS HAVE HAD LIVE BIRTHS**')
 st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
 st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
-#st.plotly_chart(fig)
+
+cola,colb =st.columns(2)
+with cola:
+    st.markdown(f'**{totalpcrdue} mothers, their babies are due for a timely PCR**')#, {pcroverdue} are over due**')
+    with st.expander ('**BABIES DUE FOR PCR**'):
+            pcrss = pcrdue.copy()#.set_index('FACILITY DISTRICT')
+            st.write(pcrss.head(4))
+            data = pcrss.to_csv(index=False)
+            st.download_button(
+                               label='DOWNLOAD_PCR_DUE',
+                               data= data,
+                               file_name="DUE_PCR.csv",
+                               mime="text/csv")
+
+with colb:
+    st.markdown(f'**{pcroverdue} mothers, their babies are due for a timely PCR**')#, {pcroverdue} are over due**')
+    with st.expander ('**BABIES DUE FOR PCR**'):
+            pcrss = pcroverdues.copy()#.set_index('FACILITY DISTRICT')
+            st.write(pcrss.head(4))
+            data = pcrss.to_csv(index=False)
+            st.download_button(
+                               label='DOWNLOAD_PCR_OVER_DUE',
+                               data= data,
+                               file_name="OVER_DUE_PCR.csv",
+                               mime="text/csv")
 #st.divider()
