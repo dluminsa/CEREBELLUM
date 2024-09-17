@@ -259,8 +259,50 @@ for facility in facilities:
     dfz = pd.merge(dfx,dfy, on = 'UNIQUE ID', how = 'left')
     vfacn.append(dfz)
 dfb = pd.concat(vfacn) 
-df = pd.concat([dfa,dfb]) 
-#GRAPHING
+df = pd.concat([dfa,dfb])
+###########################FILTERS
+file2 = r'BACKLOG.csv'
+dfJ = pd.read_csv(file2)
+st.sidebar.subheader('Filter from here ')
+district = st.sidebar.multiselect('Pick a DISTRICT', dfj['DISTRICT'].unique())
+
+if not district:
+    df2 = df.copy()
+    dfj2 = dfj.copy()
+else:
+    df2 = df[df['DISTRICT'].isin(district)]
+    dfj2 = dfj[dfj['DISTRICT'].isin(district)]
+
+#create for facility
+facility = st.sidebar.multiselect('**Select a facility**', dfj2['FACILITY'].unique())
+if not facility:
+    df3 = df2.copy()
+    dfj3 = dfj2.copy()
+else:
+    df3 = df2[df2['FACILITY'].isin(facility)]
+    dfj3 = dfj2[dfj2['FACILITY'].isin(facility)]
+ 
+#for year
+year = st.sidebar.multiselect('**Select a year**', dfj3['YEAR'].unique())
+
+if not year:
+    df4 = df3.copy()
+    dfj4 = dfj3.copy()
+else:
+    df4 = df3[df3['DYEAR'].isin(year)]
+    dfj4 = dfj3[dfj3['YEAR'].isin(year)]
+
+#for month
+month = st.sidebar.multiselect('**Select a month**', dfj4['MONTH'].unique())
+
+if not month:
+    df5 = df4.copy()
+    dfj5 = dfj4.copy()
+else:
+    df5 = df4[df4['DMONTH'].isin(month)]
+    dfj5 = dfj4[dfj4['MONTH'].isin(month)]
+
+################################GRAPHING
 df['IN COHORT?'] = df['IN COHORT?'].astype(str)
 incohort = df[df['IN COHORT?']!='NO'].copy()
 inc = int(incohort.shape[0])
