@@ -58,9 +58,9 @@ if st.session_state['username'] and st.session_state['username']:
 else:
     st.stop()
 cola, colb = st.columns([1,3])
-colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
-cola, colb = st.columns([1,4])
-colb.markdown("<p><b><i>Know where all mothers are at any time t</i></b></p>", unsafe_allow_html=True)
+colb.markdown("<h4><b>LINELISTS</b></h4>", unsafe_allow_html=True)
+#cola, colb = st.columns([1,4])
+#colb.markdown("<p><b><i>Know where all mothers are at any time t</i></b></p>", unsafe_allow_html=True)
 
 if 'pm_df' not in st.session_state:
      try:
@@ -416,34 +416,15 @@ values = [inc, notc, total, -delv, -notduec, -duec]
 measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 
 # Create the waterfall chart
-fig1 = go.Figure(go.Waterfall(
-    name="Waterfall",
-    orientation="v",
-    measure=measure,
-    x=labels,
-    textposition="outside",
-    text=[f"{v}" for v in values],
-    y=values
-))
-
-# Add titles and labels and adjust layout properties
-fig1.update_layout(
-    title="",
-    xaxis_title="CATEGORIES",
-    yaxis_title="No. OF MOTHERS",
-    showlegend=True,
-    height=425,  # Adjust height to ensure the chart fits well
-    margin=dict(l=20, r=20, t=60, b=20),  # Adjust margins to prevent clipping
-    yaxis=dict(automargin=True)
-)
+st.write(duec.columns)
 # Show the plot
 cola,colb = st.columns([1,4])
 colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
 st.write(f'**TOTAL: {total} MOTHERS ARE IN COHORT**')
 st.markdown(f'**Of these {inc} were registered during ANC, {notc} were registered during delivery**')#, giving a total of {total} mothers**')
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
-#st.plotly_chart(fig1)
-#st.divider()
+
+st.divider()
 
 #VISITORS
 df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
