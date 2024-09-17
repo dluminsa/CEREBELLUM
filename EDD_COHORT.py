@@ -377,6 +377,29 @@ fig3.update_layout(
 # Display the chart
 st.plotly_chart(fig3)
 st.divider()
+#OF THOSE THAT ARE DUE, HOW MANY ARE OURS, HOW MANY ARE VISITOR
+due = notdelivered[notdelivered['DUE']=='DUE'].copy()
+notdelivered['IS THIS HER PARENT FACILITY?'] =notdelivered['IS THIS HER PARENT FACILITY?'].astype(str)
+duevisitors = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='NO'].copy()
+duev = duevisitors.shape[0]
+dueours = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='YES'].copy()
+dueo = dueours.shape[0]
+
+# Creating the grouped bar chart
+fig4 = go.Figure(data=[
+    go.Bar(name='TOTAL DUE', x=['TOTAL DUE'], y=[duec], marker=dict(color='blue')),
+    go.Bar(name='OURS', x=['OURS'], y=[dueo], marker=dict(color='green')),
+    go.Bar(name='VISITORS', x=['VISITORS'], y=[duev], marker=dict(color='red'))
+])
+
+# Setting the layout to have no gap between bars
+fig4.update_layout(barmode='group', bargap=0, bargroupgap=0)
+
+# Display the chart
+st.plotly_chart(fig4)
+st.divider()
+
+
 
 
 
