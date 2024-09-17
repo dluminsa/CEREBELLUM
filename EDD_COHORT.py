@@ -261,9 +261,11 @@ for facility in facilities:
 dfb = pd.concat(vfacn) 
 df = pd.concat([dfa,dfb])
 ###########################FILTERS
+
 file2 = r'BACKLOG.csv'
 dfJ = pd.read_csv(file2)
 st.sidebar.subheader('Filter from here ')
+st.write(dfj.columns)
 district = st.sidebar.multiselect('Pick a DISTRICT', dfj['DISTRICT'].unique())
 
 if not district:
