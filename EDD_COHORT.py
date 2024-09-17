@@ -66,6 +66,7 @@ except:
      st.write("POOR NETWORK, COULDN'T CONNECT TO ANC DATABASE")
      st.stop()
 st.write(pm.head(5))
+st.write(pm['EDD'].head(5))
 if 'pm_df' not in st.session_state:
      st.session_state.pm_df = pm
      pm = st.session_state.pm_df
