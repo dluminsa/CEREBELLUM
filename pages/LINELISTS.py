@@ -509,17 +509,12 @@ nopcr['PCR DUE'] = nopcr['TME'].apply(pcr)
 nopcr['PCR DUE'] = nopcr['PCR DUE'].astype(str)
 pcrdue = nopcr[nopcr['PCR DUE'] == 'DUE']
 totalpcrdue = pcrdue.shape[0]
-pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE'].copy
+
+pcrnotdue = nopcr[nopcr['PCR DUE'] == 'NOT DUE'].copy()
 pcroverdue = int(nopcr[nopcr['PCR DUE'] == 'OVER DUE'].shape[0])
 totalpcrnotdue = pcrnotdue.shape[0]
 pcroverdues = nopcr[nopcr['PCR DUE'] == 'OVER DUE']
 
-# Show the plot
-cola,colb = st.columns([1,4])
-colb.write('**WATER FALL ANALYSIS OF DELIVERIES VS PCR DONE**')
-st.write(f'**TOTAL: {totallive} MOTHERS HAVE HAD LIVE BIRTHS**')
-st.markdown(f'**Of these {totalpcr} their babies have been bled for first PCR, {totalpcrnotdue} are not yet due**')#, giving a total of {total} mothers**')
-st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
 
 cola,colb =st.columns(2)
 with cola:
