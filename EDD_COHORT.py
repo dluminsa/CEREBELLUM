@@ -197,6 +197,7 @@ df['DYEAR'] = df['EDD'].dt.year #EDD YEAR
 today = dt.datetime.now() # DATE TODAY
 dmonth = int(today.strftime('%m')) #CURRENT MONTH
 dyear = int(today.strftime('%Y'))  #CURRENT YEAR
+st.write(f'the year is {dyear} and the month is {dmonth}')
 
 def DUE(a,b):
     if a > dyear:
@@ -317,8 +318,47 @@ fig.update_layout(
 # Show the plot
 #fig.show()
 #st.title("Waterfall Chart in Streamlit")
-st.plotly_chart(fig)
+#st.plotly_chart(fig)
 # st.divider()
+
+#VISITORS
+df['IS THIS HER PARENT FACILITY?'] = df['IS THIS HER PARENT FACILITY?'].astype(str)
+df['IS THIS HER PARENT FACILITY?'].unique()
+visitors = df[df['IS THIS HER PARENT FACILITY?']== 'NO'].copy()
+nonvisitors = df[df['IS THIS HER PARENT FACILITY?']== 'YES'].copy()
+mapper = {'YES':'OURS', 'NO': 'VISITORS'}
+df['VISITORS'] = df['IS THIS HER PARENT FACILITY?'].map(mapper)
+
+
+# Count occurrences of each category
+counts = df['VISITORS'].value_counts()
+
+# Prepare labels with counts
+labels = [f"{label}: {count}" for label, count in counts.items()]
+
+# Create the donut chart
+fig = go.Figure(data=[go.Pie(
+    labels=counts.index,
+    values=counts.values,
+    hole=0.4,  # This creates the donut shape
+    marker=dict(
+        colors=['blue', 'red']  # Colors for 'YES' and 'NO'
+    ),
+    text=labels,  # Use labels with counts
+    textinfo='text+percent',  # Display text and percentage
+    insidetextorientation='radial'  # Text orientation
+)])
+
+# Update layout
+fig.update_layout(
+    title_text='PROPORTION OF VISITORS',
+    showlegend=True
+)
+
+# Display the chart
+#fig.show()
+
+
 
 
 
