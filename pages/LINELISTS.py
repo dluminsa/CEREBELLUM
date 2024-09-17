@@ -416,7 +416,7 @@ values = [inc, notc, total, -delv, -notduec, -duec]
 measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 
 # Create the waterfall chart
-st.write(duec.columns)
+st.write(due.columns)
 # Show the plot
 cola,colb = st.columns([1,4])
 colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
