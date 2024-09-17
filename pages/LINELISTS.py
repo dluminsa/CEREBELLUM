@@ -8,7 +8,7 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 import bcrypt
-
+st.success('**Created by LUMINSA DESIRE**')
 # Example hashed password for "password123" using bcrypt
 hashed_password = bcrypt.hashpw("pmtct8910".encode('utf-8'), bcrypt.gensalt())
 
@@ -518,7 +518,7 @@ pcroverdues = nopcr[nopcr['PCR DUE'] == 'OVER DUE']
 
 cola,colb =st.columns(2)
 with cola:
-    st.markdown(f'**{totalpcrdue} mothers, their babies are due for a timely PCR**')#, {pcroverdue} are over due**')
+    st.markdown(f'**{totalpcrdue} mothers, their babies are due for a timely first PCR**')#, {pcroverdue} are over due**')
     with st.expander ('**BABIES DUE FOR PCR**'):
             pcrss = pcrdue.copy()#.set_index('FACILITY DISTRICT')
             st.write(pcrss.head(4))
