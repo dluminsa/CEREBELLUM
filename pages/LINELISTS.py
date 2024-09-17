@@ -16,7 +16,7 @@ with colb:
     submit = st.form_submit_button(label='Login')
 
 # Check if the form was submitted and process the password
-if submit_button:
+if submit:
     if password == 'PMTCT8910':
         st.write('Password entered successfully!')
     else:
