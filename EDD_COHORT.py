@@ -293,9 +293,9 @@ if not facility:
     dfj3 = dfj2.copy()
     dfdel3 = dfdel2.copy()
 else:
-    df3 = df2[df2['FACILITY'].isin(facility)].cop()
+    df3 = df2[df2['HEALTH FACILITY'].isin(facility)].cop()
     dfj3 = dfj2[dfj2['FACILITY'].isin(facility)].copy()
-    dfdel3 = dfdel2[dfdel2['FACILITY'].isin(facility)].copy()
+    dfdel3 = dfdel2[dfdel2['HEALTH FACILITY'].isin(facility)].copy()
  
 #for year
 year = st.sidebar.multiselect('**Select a year**', dfj3['YEAR'].unique())
@@ -331,8 +331,8 @@ if district:
     fdfd = fdfd[fdfd['DISTRICT'].isin(district)]
 
 if facility:
-    fdf = fdf[fdf['FACILITY'].isin(facility)]
-    fdfd = fdfd[fdfd['FACILITY'].isin(facility)]
+    fdf = fdf[fdf['HEALTH FACILITY'].isin(facility)]
+    fdfd = fdfd[fdfd['HEALTH FACILITY'].isin(facility)]
 if year:
     fdf = fdf[fdf['DYEAR'].isin(year)]
     fdfd = fdfd[fdfd['EYEAR'].isin(year)]
