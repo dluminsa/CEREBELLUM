@@ -7,7 +7,6 @@ import datetime as dt
 from IPython.display import display
 import streamlit as st
 from datetime import datetime
-sddd
 
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
