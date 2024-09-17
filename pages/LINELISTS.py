@@ -416,7 +416,7 @@ values = [inc, notc, total, -delv, -notduec, -duec]
 measure = ["absolute", "relative", "total", "relative", "relative", "total"]
 
 # Create the waterfall chart
-st.write(due.columns)
+
 # Show the plot
 cola,colb = st.columns([1,4])
 colb.write('**WATER FALL ANALYSIS OF THE COHORT**')
@@ -425,7 +425,7 @@ st.markdown(f'**Of these {inc} were registered during ANC, {notc} were registere
 st.markdown(f'**Of these, {delv} have delivered, {notduec} are not yet due,  leaving a total of {duec} mothers to track**')
 dues = due.drop(columns = ['DATE OF SUBMISSION','CLUSTER', 'DMONTH', 'DYEAR', 'EYEAR', 'EMONTH', 'EDMONTH'])
 with st.expander ('Click here to see mothers that are due'):
-    dues = dues.set_index('CLUSTER')
+    dues = dues.set_index('FACILITY DISTRICT')
     st.write(dues)
     data = dues.to_csv(index=False)
     st.download_button(
