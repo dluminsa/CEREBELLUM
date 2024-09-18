@@ -361,6 +361,7 @@ delv = int(delivered.shape[0])
 notdelivered = df[df['OUTCOME']=='NOT'].copy()
 notdelv = int(notdelivered.shape[0])
 notdelivered['DUE'] = notdelivered['DUE'].astype(str)
+
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
 duec = int(due.shape[0])
 notdue = notdelivered[notdelivered['DUE']=='NOT DUE'].copy()
@@ -479,12 +480,14 @@ st.plotly_chart(fig3)
 st.divider()
 
 #OF THOSE THAT ARE DUE, HOW MANY ARE OURS, HOW MANY ARE VISITOR
+
 due = notdelivered[notdelivered['DUE']=='DUE'].copy()
-notdelivered['IS THIS HER PARENT FACILITY?'] =notdelivered['IS THIS HER PARENT FACILITY?'].astype(str)
-duevisitors = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='NO'].copy()
+due['IS THIS HER PARENT FACILITY?'] =due['IS THIS HER PARENT FACILITY?'].astype(str)
+duevisitors = due[due['IS THIS HER PARENT FACILITY?']=='NO'].copy()
 duev = duevisitors.shape[0]
-dueours = notdelivered[notdelivered['IS THIS HER PARENT FACILITY?']=='YES'].copy()
+dueours = due[due['IS THIS HER PARENT FACILITY?']=='YES'].copy()
 dueo = dueours.shape[0]
+duec = int(due.shape[0])
 
 # Creating the grouped bar chart
 fig4 = go.Figure(data=[
