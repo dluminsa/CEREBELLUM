@@ -511,7 +511,7 @@ st.divider()
 df['MWP IDI DISTRICT?'] = df['MWP IDI DISTRICT?'].astype(str)
 df['MWP IDI DISTRICT?'].value_counts()
 ours = df[df['MWP IDI DISTRICT?']=='YES'].copy()
-st.write(f'{ours.shape[0], 2')
+st.write(f'{ours.shape[0]}, 2')
 theirs = df[df['MWP IDI DISTRICT?']=='NO'].copy()
 dcount = ours['IDI SUPPORTED DISTRICT'].value_counts()
 district_counts =  ours['IDI SUPPORTED DISTRICT'].value_counts().reset_index()
@@ -575,7 +575,7 @@ st.divider()
 
 #OF THOSE THAT COME FROM OUR REGION, HOW MANY COME FROM OUR FACILITIES
 ours['FROM IDI FACILITY?'] = ours['FROM IDI FACILITY?'].astype(str)
-st.write(f'{ours.shape[0], 3')
+st.write(f'{ours.shape[0]}, 3')
 ourt = int(ours.shape[0])
 ourc = int(ours[ours['FROM IDI FACILITY?']=='YES'].shape[0])
 
