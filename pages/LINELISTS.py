@@ -540,6 +540,12 @@ with colb:
                                data= data,
                                file_name="OVER_DUE_PCR.csv",
                                mime="text/csv")
-#st.divider()
+        
+st.divider()
+st.write('')
+st.write('')
+st.write('')
+st.write('')
+st.write('')
 cola,colb,colc = st.columns([2,1,1])
 cola.info('**Created by LUMINSA DESIRE**')
