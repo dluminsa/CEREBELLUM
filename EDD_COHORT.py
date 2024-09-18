@@ -8,8 +8,8 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 
-cola,colb,colc = st.columns([1,1,2])
-colc.info('**Created by LUMINSA DESIRE**')
+#cola,colb,colc = st.columns([1,1,2])
+#colc.info('**Created by LUMINSA DESIRE**')
 
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
@@ -744,6 +744,13 @@ st.markdown(f'**Of these, {totalpcr} have had their babies bled for first PCR, {
 st.markdown(f'**{totalpcrdue} are due for a timely PCR, {pcroverdue} are over due**')
 st.plotly_chart(fig)
 st.divider()
+st.write('')
+st.write('')
+st.write('')
+st.write('')
+st.write('')
+cola,colb,colc = st.columns([2,1,1])
+cola.info('**Created by LUMINSA DESIRE**')
 
 
 
