@@ -8,8 +8,7 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 import bcrypt
-cola,colb,colc = st.columns([1,1,2])
-colc.info('**Created by LUMINSA DESIRE**')
+
 # Example hashed password for "password123" using bcrypt
 hashed_password = bcrypt.hashpw("pmtct8910".encode('utf-8'), bcrypt.gensalt())
 
@@ -542,3 +541,5 @@ with colb:
                                file_name="OVER_DUE_PCR.csv",
                                mime="text/csv")
 #st.divider()
+cola,colb,colc = st.columns([2,1,1])
+cola.info('**Created by LUMINSA DESIRE**')
