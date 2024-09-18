@@ -32,13 +32,13 @@ if 'logged_in' not in st.session_state:
 # If the user is logged in, show a welcome message and logout button
 if st.session_state['logged_in']:
     st.success("WELCOME, YOU CAN NOW ACCESS THE LINE-LISTS")
-    if st.button("Logout"):
-        st.session_state['logged_in'] = False
-        st.rerun()  # Refresh the app state to show the login form again
+    # if st.button("Logout"):
+    #     st.session_state['logged_in'] = False
+    #     st.rerun()  # Refresh the app state to show the login form again
 
 # If the user is not logged in, show the login form
 if not st.session_state['logged_in']:
-    st.header("Login")
+    st.write("LOGIN TO SEE LINELISTS")
 
     with st.form("login_form"):
         username = st.text_input("Username")
