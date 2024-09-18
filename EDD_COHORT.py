@@ -436,7 +436,7 @@ fig2.update_layout(
 )
 cola,colb = st.columns([1,4])
 colb.write('**PROPORTION OF VISITORS**')
-st.markdown(f'**Of the {inc + notc} mothers in cohort, {ourd} were from the same reporting facility, {theird} were visitors**')
+st.markdown(f'**Of the {inc + notc} mothers in cohort, {ourd} are from the same reporting facility, {theird} are visitors**')
 st.plotly_chart(fig2)
 st.divider()
 
@@ -474,7 +474,7 @@ fig3.update_layout(
 # Display the chart
 cola,colb = st.columns([1,4])
 colb.write('**VISITORS FROM WITHIN REGION VS FROM OUTSIDE**')
-st.markdown(f'**Of the {theird} visitors in cohort, {outd} were from within the region, {theird-outd} were from outside the region**')
+st.markdown(f'**Of the {theird} visitors in cohort, {outd} are from within the region, {theird-outd} are from outside the region**')
 st.plotly_chart(fig3)
 st.divider()
 
