@@ -550,8 +550,8 @@ st.divider()
 theirscount = theirs['OTHER DISTRICT'].value_counts()
 theirscount  = theirscount .reset_index()
 theirscount.columns = ['DISTRICT', 'VISITORS']
-theirscounta = theirscount[theirscount['VISITORS']>3].copy()
-theirscountb = theirscount[theirscount['VISITORS']<4].copy()
+theirscounta = theirscount[theirscount['VISITORS']>2].copy()
+theirscountb = theirscount[theirscount['VISITORS']<3].copy()
 totalothers = theirscount['VISITORS'].sum()
 addothers = pd.DataFrame({'DISTRICT': 'OTHERS',
                           'VISITORS': [totalothers]})
