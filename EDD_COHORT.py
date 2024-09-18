@@ -410,7 +410,6 @@ df['VISITORS'] = df['IS THIS HER PARENT FACILITY?'].map(mapper)
 
 # Count occurrences of each category
 counts = df['VISITORS'].value_counts()
-st.write(counts)
 ourd = int(df[df['VISITORS']=='OURS'].shape[0])
 theird = int(df[df['VISITORS']=='VISITORS'].shape[0])
 
