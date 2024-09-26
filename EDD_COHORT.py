@@ -79,7 +79,7 @@ if 'de_df' not in st.session_state:
      try:
         #cola,colb= st.columns(2)
         conn = st.connection('gsheets', type=GSheetsConnection)
-        exist = conn.read(worksheet= 'DELIVERY', usecols=list(range(26)),ttl=5)
+        exist = conn.read(worksheet= 'DELIVERYA', usecols=list(range(26)),ttl=5)
         df = exist.dropna(how='all')
         delvr = df.copy()
         st.session_state.de_df = delvr
@@ -91,7 +91,7 @@ delvr = st.session_state.de_df.copy()
 if 'pc_df' not in st.session_state:
      try:
         conn = st.connection('gsheets', type=GSheetsConnection)
-        exist = conn.read(worksheet= 'PCR', usecols=list(range(25)),ttl=5)
+        exist = conn.read(worksheet= 'PCRA', usecols=list(range(25)),ttl=5)
         pcr = exist.dropna(how='all')
         st.session_state.pc_df = pcr
      except:
