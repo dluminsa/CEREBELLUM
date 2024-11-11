@@ -10,8 +10,8 @@ from datetime import datetime
 ssdd
 #cola,colb,colc = st.columns([1,1,2])
 #colc.info('**Created by LUMINSA DESIRE**')
-st.write('BEING UPDATED')
-st.stop()
+# st.write('BEING UPDATED')
+# st.stop()
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
 cola, colb = st.columns([1,4])
