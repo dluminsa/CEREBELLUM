@@ -8,10 +8,6 @@ from IPython.display import display
 import streamlit as st
 from datetime import datetime
 
-
-
-# st.write('BEING UPDATED')
-# st.stop()
 cola, colb = st.columns([1,3])
 colb.markdown("<h4><b>PMTCT CEREBELLUM</b></h4>", unsafe_allow_html=True)
 cola, colb = st.columns([1,4])
